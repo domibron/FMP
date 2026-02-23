@@ -23,14 +23,6 @@ public class Thruster : ComponentBase
 
     void Update()
     {
-        // if (Input.GetKey(KeyCode.Space))
-        // {
-        //     SetThrusterForce(100f);
-        // }
-        // else
-        // {
-        //     SetThrusterForce(0);
-        // }
 
         TickThruster();
     }
@@ -38,6 +30,16 @@ public class Thruster : ComponentBase
     public void SetThrusterForce(float force)
     {
         targetForce = Mathf.Max(force, 0f);// prevents negative forces.
+    }
+
+    public void AddToThrusterForce(float forceToAdd)
+    {
+        targetForce += Mathf.Max(forceToAdd, 0f);
+    }
+
+    public float GetThrusterForce()
+    {
+        return targetForce;
     }
 
     private void TickThruster()

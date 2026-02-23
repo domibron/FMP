@@ -4,270 +4,199 @@ public class FlightController : MonoBehaviour
 {
     // forward facing thrusters (next to cockpit)
     // Could replace with getting thruster direction instead then collecting them here and then its dynamically adjusting.
-    [SerializeField]
-    Thruster frontLeft;
-    [SerializeField]
-    Thruster frontRight;
+    [SerializeField, Header("Linear Thruster")]
+    Thruster[] forwardThrusters;
 
     [SerializeField]
-    Thruster rearLeft;
-    [SerializeField]
-    Thruster rearRight;
+    Thruster[] backwardThrusters;
 
     [SerializeField]
-    Thruster leftFront;
-    [SerializeField]
-    Thruster leftRear;
+    Thruster[] leftThrusters;
 
     [SerializeField]
-    Thruster rightFront;
-    [SerializeField]
-    Thruster rightRear;
+    Thruster[] rightThrusters;
 
     [SerializeField]
-    Thruster topFrontLeft;
-    [SerializeField]
-    Thruster topRearLeft;
-    [SerializeField]
-    Thruster topFrontRight;
-    [SerializeField]
-    Thruster topRearRight;
+    Thruster[] upThrusters;
 
     [SerializeField]
-    Thruster bottomFrontLeft;
+    Thruster[] downThrusters;
+
+    [SerializeField, Header("Rotational Thruster")]
+    Thruster[] pitchUpThrusters;
+
     [SerializeField]
-    Thruster bottomRearLeft;
+    Thruster[] pitchDownThrusters;
+
     [SerializeField]
-    Thruster bottomFrontRight;
+    Thruster[] yawLeftThrusters;
+
     [SerializeField]
-    Thruster bottomRearRight;
+    Thruster[] yawRightThrusters;
 
+    [SerializeField]
+    Thruster[] rollCounterClockwiseThrusters;
 
-    float frontLeftThrust;
-    float frontRightThrust;
+    [SerializeField]
+    Thruster[] rollClockwiseThrusters;
 
-    float rearLeftThrust;
-    float rearRightThrust;
-
-    float leftFrontThrust;
-    float leftRearThrust;
-
-    float rightFrontThrust;
-    float rightRearThrust;
-
-    float topFrontLeftThrust;
-    float topRearLeftThrust;
-    float topFrontRightThrust;
-    float topRearRightThrust;
-
-    float bottomFrontLeftThrust;
-    float bottomRearLeftThrust;
-    float bottomFrontRightThrust;
-    float bottomRearRightThrust;
+    private InputHandler inputHandler;
 
     float forceAmount = 100;
+
+    Rigidbody rb;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        inputHandler = GetComponent<InputHandler>();
+        rb = GetComponentInParent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        ResetAllThrusters();
+        Vector3 currentInputVector = inputHandler.GetMoveInputVector();
+        Vector3 currentLookVector = inputHandler.GetLookInputVector();
 
-        print(GetLookAsVector().ToString());
-        ResetThrust();
-        LinearThrust(GetInputAsVector());
-        RotationalThrust(GetLookAsVector());
-        ApplyThrust();
+        LinearThrust(currentInputVector);
+        RotationalThrust(currentLookVector);
+
+        Vector3 linearVelocity = transform.InverseTransformDirection(rb.linearVelocity);
+        Vector3 angularVelocity = transform.InverseTransformDirection(rb.angularVelocity);
+
+
     }
 
-    // TODO: replace with new input system.
-    Vector3 GetInputAsVector()
-    {
-        Vector3 inputVector = Vector3.zero;
-        if (Input.GetKey(KeyCode.W)) inputVector.z += 1;
-        if (Input.GetKey(KeyCode.S)) inputVector.z -= 1;
-
-        if (Input.GetKey(KeyCode.D)) inputVector.x += 1;
-        if (Input.GetKey(KeyCode.A)) inputVector.x -= 1;
-
-        if (Input.GetKey(KeyCode.Space)) inputVector.y += 1;
-        if (Input.GetKey(KeyCode.LeftControl)) inputVector.y -= 1;
-
-        return inputVector;
-    }
-
-    // TODO: replace with new input system.
-    Vector3 GetLookAsVector()
-    {
-        Vector3 inputVector = Vector3.zero;
-        if (Input.GetKey(KeyCode.E)) inputVector.z += 1;
-        if (Input.GetKey(KeyCode.Q)) inputVector.z -= 1;
-
-        inputVector.x = Input.GetAxisRaw("Mouse X");
-        inputVector.y = Input.GetAxisRaw("Mouse Y");
-
-        return inputVector;
-    }
 
     void LinearThrust(Vector3 direction)
     {
+        // forward and backwards
         if (direction.z > 0)
         {
-            rearLeftThrust += forceAmount;
-            rearRightThrust += forceAmount;
+            AddThrustToThrusterGroup(ref forwardThrusters, forceAmount);
         }
         else if (direction.z < 0)
         {
-            frontLeftThrust += forceAmount;
-            frontRightThrust += forceAmount;
+            AddThrustToThrusterGroup(ref backwardThrusters, forceAmount);
         }
-        // else
-        // {
-        //     // It will reset.
-        // }
 
+
+        // left and right
         if (direction.x > 0)
         {
-            leftFrontThrust += forceAmount;
-            leftRearThrust += forceAmount;
+            AddThrustToThrusterGroup(ref rightThrusters, forceAmount);
         }
         else if (direction.x < 0)
         {
-            rightFrontThrust += forceAmount;
-            rightRearThrust += forceAmount;
+            AddThrustToThrusterGroup(ref leftThrusters, forceAmount);
         }
 
+
+        // up and down
         if (direction.y > 0)
         {
-            bottomFrontLeftThrust += forceAmount;
-            bottomRearLeftThrust += forceAmount;
-            bottomFrontRightThrust += forceAmount;
-            bottomRearRightThrust += forceAmount;
+            AddThrustToThrusterGroup(ref upThrusters, forceAmount);
         }
         else if (direction.y < 0)
         {
-            topFrontLeftThrust += forceAmount;
-            topRearLeftThrust += forceAmount;
-            topFrontRightThrust += forceAmount;
-            topRearRightThrust += forceAmount;
+            AddThrustToThrusterGroup(ref downThrusters, forceAmount);
         }
     }
 
     // PC controls
     void RotationalThrust(Vector3 look)
     {
-        if (look.x > 0.1f) // right and left
+        // right and left (PC Only)
+        if (look.x > 0.1f)
         {
             float amount = Mathf.Abs(look.x);
-            rearLeft.PulseThruster(forceAmount * amount * Time.deltaTime);
-            frontRight.PulseThruster(forceAmount * amount * Time.deltaTime);
 
-            leftFront.PulseThruster(forceAmount * amount * Time.deltaTime);
-            rightRear.PulseThruster(forceAmount * amount * Time.deltaTime);
+            PulseThrusterGroup(ref yawRightThrusters, forceAmount * amount * Time.deltaTime);
         }
         else if (look.x < 0.1f)
         {
             float amount = Mathf.Abs(look.x);
-            rearRight.PulseThruster(forceAmount * amount * Time.deltaTime);
-            frontLeft.PulseThruster(forceAmount * amount * Time.deltaTime);
 
-            leftRear.PulseThruster(forceAmount * amount * Time.deltaTime);
-            rightFront.PulseThruster(forceAmount * amount * Time.deltaTime);
+            PulseThrusterGroup(ref yawLeftThrusters, forceAmount * amount * Time.deltaTime);
         }
-        // else
-        // {
-        //     // It will reset.
-        // }
 
-        if (look.y > 0.1f) // up and down
+
+        // up and down (PC Only)
+        if (look.y > 0.1f)
         {
             float amount = Mathf.Abs(look.y);
-            bottomFrontLeft.PulseThruster(forceAmount * amount * Time.deltaTime);
-            bottomFrontRight.PulseThruster(forceAmount * amount * Time.deltaTime);
 
-            topRearLeft.PulseThruster(forceAmount * amount * Time.deltaTime);
-            topRearRight.PulseThruster(forceAmount * amount * Time.deltaTime);
+            PulseThrusterGroup(ref pitchUpThrusters, forceAmount * amount * Time.deltaTime);
         }
         else if (look.y < 0.1f)
         {
             float amount = Mathf.Abs(look.y);
-            bottomRearLeft.PulseThruster(forceAmount * amount * Time.deltaTime);
-            bottomRearRight.PulseThruster(forceAmount * amount * Time.deltaTime);
 
-            topFrontLeft.PulseThruster(forceAmount * amount * Time.deltaTime);
-            topFrontRight.PulseThruster(forceAmount * amount * Time.deltaTime);
+            PulseThrusterGroup(ref pitchDownThrusters, forceAmount * amount * Time.deltaTime);
         }
 
-        // Q and E PC and controller universal.
-        if (look.z > 0) // Roll right and left
-        {
-            bottomFrontLeftThrust += forceAmount;
-            bottomRearLeftThrust += forceAmount;
 
-            topFrontRightThrust += forceAmount;
-            topRearRightThrust += forceAmount;
+        // Q and E PC and controller universal.
+        // Roll right and left
+        if (look.z > 0)
+        {
+            AddThrustToThrusterGroup(ref rollClockwiseThrusters, forceAmount);
         }
         else if (look.z < 0)
         {
-            bottomFrontRightThrust += forceAmount;
-            bottomRearRightThrust += forceAmount;
-
-            topFrontLeftThrust += forceAmount;
-            topRearLeftThrust += forceAmount;
+            AddThrustToThrusterGroup(ref rollCounterClockwiseThrusters, forceAmount);
         }
     }
 
-    void ResetThrust()
+    void ResetAllThrusters()
     {
-        frontLeftThrust = 0;
-        frontRightThrust = 0;
+        // linear thrusters
+        ResetThrusterGroup(ref forwardThrusters);
+        ResetThrusterGroup(ref backwardThrusters);
+        ResetThrusterGroup(ref leftThrusters);
+        ResetThrusterGroup(ref rightThrusters);
+        ResetThrusterGroup(ref upThrusters);
+        ResetThrusterGroup(ref downThrusters);
 
-        rearLeftThrust = 0;
-        rearRightThrust = 0;
-
-        leftFrontThrust = 0;
-        leftRearThrust = 0;
-
-        rightFrontThrust = 0;
-        rightRearThrust = 0;
-
-        topFrontLeftThrust = 0;
-        topRearLeftThrust = 0;
-        topFrontRightThrust = 0;
-        topRearRightThrust = 0;
-
-        bottomFrontLeftThrust = 0;
-        bottomRearLeftThrust = 0;
-        bottomFrontRightThrust = 0;
-        bottomRearRightThrust = 0;
+        // rotational thrusters
+        ResetThrusterGroup(ref pitchUpThrusters);
+        ResetThrusterGroup(ref pitchDownThrusters);
+        ResetThrusterGroup(ref yawLeftThrusters);
+        ResetThrusterGroup(ref yawRightThrusters);
+        ResetThrusterGroup(ref rollCounterClockwiseThrusters);
+        ResetThrusterGroup(ref rollClockwiseThrusters);
     }
 
-    void ApplyThrust()
+    void ResetThrusterGroup(ref Thruster[] thrusters)
     {
-        frontLeft.SetThrusterForce(frontLeftThrust);
-        frontRight.SetThrusterForce(frontRightThrust);
+        foreach (var thruster in thrusters)
+        {
+            thruster.SetThrusterForce(0);
+        }
+    }
 
-        rearLeft.SetThrusterForce(rearLeftThrust);
-        rearRight.SetThrusterForce(rearRightThrust);
+    void AddThrustToThrusterGroup(ref Thruster[] thrusters, float forceToAdd)
+    {
+        foreach (var thruster in thrusters)
+        {
+            thruster.AddToThrusterForce(forceToAdd);
+        }
+    }
 
-        leftFront.SetThrusterForce(leftFrontThrust);
-        leftRear.SetThrusterForce(leftRearThrust);
+    void PulseThrusterGroup(ref Thruster[] thrusters, float force)
+    {
+        foreach (var thruster in thrusters)
+        {
+            thruster.PulseThruster(force);
+        }
+    }
 
-        rightFront.SetThrusterForce(rightFrontThrust);
-        rightRear.SetThrusterForce(rightRearThrust);
-
-        topFrontLeft.SetThrusterForce(topFrontLeftThrust);
-        topRearLeft.SetThrusterForce(topRearLeftThrust);
-        topFrontRight.SetThrusterForce(topFrontRightThrust);
-        topRearRight.SetThrusterForce(topRearRightThrust);
-
-        bottomFrontLeft.SetThrusterForce(bottomFrontLeftThrust);
-        bottomRearLeft.SetThrusterForce(bottomRearLeftThrust);
-        bottomFrontRight.SetThrusterForce(bottomFrontRightThrust);
-        bottomRearRight.SetThrusterForce(bottomRearRightThrust);
+    Vector3 ClampVector(Vector3 vector)
+    {
+        const int LOWER_BOUND = -1;
+        const int UPPER_BOUND = 1;
+        return new Vector3(Mathf.Clamp(vector.x, LOWER_BOUND, UPPER_BOUND), Mathf.Clamp(vector.y, LOWER_BOUND, UPPER_BOUND), Mathf.Clamp(vector.z, LOWER_BOUND, UPPER_BOUND));
     }
 }
