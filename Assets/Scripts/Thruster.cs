@@ -72,6 +72,10 @@ public class Thruster : ComponentBase
         }
     }
 
+    public Vector3 GetForceDirection()
+    {
+        return -forceDirection.normalized;
+    }
 
     void OnDrawGizmos()
     {

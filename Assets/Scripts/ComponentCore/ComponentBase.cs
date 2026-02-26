@@ -35,4 +35,9 @@ public class ComponentBase : MonoBehaviour
             DestroyComponent();
         }
     }
+
+    public bool IsComponentDestroyed()
+    {
+        return destroyed;
+    }
 }
