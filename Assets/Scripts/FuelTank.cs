@@ -11,8 +11,13 @@ public class FuelTank : MonoBehaviour, IConsumable, IDataReadable
     [SerializeField]
     FuelCell[] fuelCells;
 
+    [SerializeField]
+    bool infFuel = false;
+
     public bool Consume(float amount)
     {
+        if (infFuel) return true;
+
         List<FuelCell> availableFuelCells = new List<FuelCell>();
 
         foreach (var fuelCell in fuelCells)

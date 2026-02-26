@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FlightController : MonoBehaviour
@@ -101,9 +102,10 @@ public class FlightController : MonoBehaviour
 
         Vector3 linearVelocity = rb.linearVelocity;
         Vector3 angularVelocity = transform.InverseTransformDirection(rb.angularVelocity);
+        // print(DateTime.Now.ToString());
         // print(linearVelocity);
-        LinearInertiaDampening(currentInputVector, linearVelocity);
-        THRUSTERTEMP(leftThrusters[0]);
+        // LinearInertiaDampening(currentInputVector, linearVelocity);
+        RotationalInertiaDampening(currentLookVector, angularVelocity);
         // Debug.DrawLine(rb.transform.position, rb.transform.position + linearVelocity);
     }
 
@@ -195,10 +197,27 @@ public class FlightController : MonoBehaviour
 
     void RotationalInertiaDampening(Vector3 inputLookVector, Vector3 currentAngularVelocity)
     {
+        Vector3 velocityInLocal = Quaternion.Inverse(rb.transform.rotation) * currentAngularVelocity;
 
+        Vector3 v = GetAngularDisplacement(-GetIgnoredAxis(inputLookVector, velocityInLocal.normalized)) * Time.deltaTime;
+
+        // print(v + " " + currentAngularVelocity);
+        //print($"{GetCombinedAngularDisplacement(ref pitchDownThrusters)} {GetCombinedAngularDisplacement(ref rollClockwiseThrusters)} {GetCombinedAngularDisplacement(ref yawLeftThrusters)}");
     }
 
-    void THRUSTERTEMP(Thruster thruster)
+    Vector3 GetAngularAcceleration(ref Thruster[] thrusters)
+    {
+        Vector3 combinedTorque = Vector3.zero;
+
+        foreach (Thruster thr in thrusters)
+        {
+            combinedTorque += GetTorque(thr);
+        }
+
+        return combinedTorque / (rb.mass * Mathf.Pow(5f, 2f));
+    }
+
+    Vector3 GetTorque(Thruster thruster)
     {
         Vector3 displacement = thruster.transform.localPosition - rb.centerOfMass;
         Vector3 forceVector = thruster.GetForceDirection() * forceAmount;
@@ -207,10 +226,74 @@ public class FlightController : MonoBehaviour
         float inertia = rb.mass * Mathf.Pow(displacement.magnitude, 2f);
 
         // average out the torque from all thrusters. here before the final calc.
-        // Res is in rads and NOT in degrees.
-        Vector3 angularDisplacement = torque / inertia;
+        // Res is in rads and NOT in degrees. ~ rads as in radiation? ~ no, as in radians!
+        // Vector3 angularDisplacement = torque / inertia;
 
-        print(angularDisplacement);
+        // Vector3 angularVelocity = angularDisplacement * Time.deltaTime;
+        // return angularDisplacement * Time.deltaTime;
+
+        return torque;
+
+        // print(angularDisplacement);
+    }
+
+    Vector3 GetAngularDisplacement(Vector3 desiredRoationDirections)
+    {
+        Vector3 finalAngularAccel = Vector3.zero;
+
+        if (desiredRoationDirections.x > 0)
+        {
+            finalAngularAccel += GetAngularAcceleration(ref pitchDownThrusters);
+        }
+        else if (desiredRoationDirections.x < 0)
+        {
+            finalAngularAccel += GetAngularAcceleration(ref pitchUpThrusters);
+        }
+
+
+        if (desiredRoationDirections.y > 0)
+        {
+            finalAngularAccel += GetAngularAcceleration(ref yawRightThrusters);
+        }
+        else if (desiredRoationDirections.y < 0)
+        {
+            finalAngularAccel += GetAngularAcceleration(ref yawLeftThrusters);
+        }
+
+        if (desiredRoationDirections.z > 0)
+        {
+            finalAngularAccel += GetAngularAcceleration(ref rollClockwiseThrusters);
+        }
+        else if (desiredRoationDirections.z < 0)
+        {
+            finalAngularAccel += GetAngularAcceleration(ref rollCounterClockwiseThrusters);
+        }
+
+        return finalAngularAccel;
+    }
+
+    Vector3 GetIgnoredAxis(Vector3 inputV, Vector3 currentVector)
+    {
+        // currentVector.Normalize();
+
+        Vector3 finalVector = Vector3.zero;
+
+        if (IsCloseToZero(inputV.x))
+        {
+            finalVector.x = -currentVector.x;
+        }
+
+        if (IsCloseToZero(inputV.y))
+        {
+            finalVector.y = -currentVector.y;
+        }
+
+        if (IsCloseToZero(inputV.z))
+        {
+            finalVector.z = -currentVector.z;
+        }
+
+        return finalVector;
     }
 
     void LinearInertiaDampening(Vector3 inputVector, Vector3 currentLinearVelocity)
@@ -218,35 +301,14 @@ public class FlightController : MonoBehaviour
         // Vector3 targetDampen = -currentLinearVelocity;
         //Vector3 dampenDirection = (inputVector.normalized - currentLinearVelocity.normalized).normalized;
 
-        Vector3 GetDampenDirection(Vector3 inputV, Vector3 currentLVelocity)
-        {
-            currentLVelocity.Normalize();
 
-            Vector3 finalVector = Vector3.zero;
 
-            if (IsCloseToZero(inputV.x))
-            {
-                finalVector.x = -currentLVelocity.x;
-            }
-
-            if (IsCloseToZero(inputV.y))
-            {
-                finalVector.y = -currentLVelocity.y;
-            }
-
-            if (IsCloseToZero(inputV.z))
-            {
-                finalVector.z = -currentLVelocity.z;
-            }
-
-            return finalVector;
-        }
-
-        Vector3 velocityInLocal = rb.transform.InverseTransformVector(currentLinearVelocity);
+        // Vector3 velocityInLocal = rb.transform.InverseTransformVector(currentLinearVelocity);
+        Vector3 velocityInLocal = rb.transform.rotation * currentLinearVelocity;
         // Debug.DrawLine(rb.transform.position, rb.transform.position + rb.transform.TransformVector(velocityInLocal), Color.red);
         //print($"{velocityInLocal.normalized} vs {currentLinearVelocity.normalized}");
 
-        Vector3 accelVector = GetAccelVector(GetDampenDirection(inputVector, velocityInLocal));
+        Vector3 accelVector = GetAccelVector(GetIgnoredAxis(inputVector, velocityInLocal.normalized));
         Vector3 finalVelocity = currentLinearVelocity + (accelVector * Time.deltaTime);
 
 
@@ -256,30 +318,30 @@ public class FlightController : MonoBehaviour
         {
             if (velocityInLocal.x > 0)
             {
-                // if (finalVelocity.x < 0)
-                // {
-                //     // overshot
-                //     // to get the force required, reverse the formula. Get the accel, then plug that in to get the force needed.
-                // }
-                // else if (finalVelocity.x > 0)
-                // {
-                //     AddThrustToThrusterGroup(ref rightThrusters, forceAmount);
-                // }
-                AddThrustToThrusterGroup(ref leftThrusters, forceAmount);
+                if (finalVelocity.x < 0)
+                {
+                    // overshot
+                    // to get the force required, reverse the formula. Get the accel, then plug that in to get the force needed.
+                }
+                else if (finalVelocity.x > 0)
+                {
+                    AddThrustToThrusterGroup(ref rightThrusters, forceAmount);
+                }
+                // AddThrustToThrusterGroup(ref leftThrusters, forceAmount);
 
             }
             else if (velocityInLocal.x < 0)
             {
 
-                // if (finalVelocity.x > 0)
-                // {
-                //     // overshot
-                // }
-                // else if (finalVelocity.x < 0)
-                // {
-                //     AddThrustToThrusterGroup(ref leftThrusters, forceAmount);
-                // }
-                AddThrustToThrusterGroup(ref rightThrusters, forceAmount);
+                if (finalVelocity.x > 0)
+                {
+                    // overshot
+                }
+                else if (finalVelocity.x < 0)
+                {
+                    AddThrustToThrusterGroup(ref leftThrusters, forceAmount);
+                }
+                // AddThrustToThrusterGroup(ref rightThrusters, forceAmount);
 
             }
         }
@@ -288,31 +350,31 @@ public class FlightController : MonoBehaviour
         {
             if (velocityInLocal.y > 0)
             {
-                // if (finalVelocity.y < 0)
-                // {
-                //     // overshot
-                //     // to get the force required, reverse the formula. Get the accel, then plug that in to get the force needed.
-                // }
-                // else if (finalVelocity.y > 0)
-                // {
-                //     AddThrustToThrusterGroup(ref upThrusters, forceAmount);
-                // }
+                if (finalVelocity.y < 0)
+                {
+                    // overshot
+                    // to get the force required, reverse the formula. Get the accel, then plug that in to get the force needed.
+                }
+                else if (finalVelocity.y > 0)
+                {
+                    AddThrustToThrusterGroup(ref upThrusters, forceAmount);
+                }
 
-                AddThrustToThrusterGroup(ref downThrusters, forceAmount);
+                // AddThrustToThrusterGroup(ref downThrusters, forceAmount);
 
             }
             else if (velocityInLocal.y < 0)
             {
 
-                // if (finalVelocity.y > 0)
-                // {
-                //     // overshot
-                // }
-                // else if (finalVelocity.y < 0)
-                // {
-                //     AddThrustToThrusterGroup(ref downThrusters, forceAmount);
-                // }
-                AddThrustToThrusterGroup(ref upThrusters, forceAmount);
+                if (finalVelocity.y > 0)
+                {
+                    // overshot
+                }
+                else if (finalVelocity.y < 0)
+                {
+                    AddThrustToThrusterGroup(ref downThrusters, forceAmount);
+                }
+                // AddThrustToThrusterGroup(ref upThrusters, forceAmount);
 
             }
         }
@@ -321,30 +383,30 @@ public class FlightController : MonoBehaviour
         {
             if (velocityInLocal.z > 0)
             {
-                // if (finalVelocity.z < 0)
-                // {
-                //     // overshot
-                //     // to get the force required, reverse the formula. Get the accel, then plug that in to get the force needed.
-                // }
-                // else if (finalVelocity.z > 0)
-                // {
-                //     AddThrustToThrusterGroup(ref forwardThrusters, forceAmount);
-                // }
-                AddThrustToThrusterGroup(ref backwardThrusters, forceAmount);
+                if (finalVelocity.z < 0)
+                {
+                    // overshot
+                    // to get the force required, reverse the formula. Get the accel, then plug that in to get the force needed.
+                }
+                else if (finalVelocity.z > 0)
+                {
+                    AddThrustToThrusterGroup(ref forwardThrusters, forceAmount);
+                }
+                // AddThrustToThrusterGroup(ref backwardThrusters, forceAmount);
 
             }
             else if (velocityInLocal.z < 0)
             {
 
-                // if (finalVelocity.z > 0)
-                // {
-                //     // overshot
-                // }
-                // else if (finalVelocity.z < 0)
-                // {
-                //     AddThrustToThrusterGroup(ref backwardThrusters, forceAmount);
-                // }
-                AddThrustToThrusterGroup(ref forwardThrusters, forceAmount);
+                if (finalVelocity.z > 0)
+                {
+                    // overshot
+                }
+                else if (finalVelocity.z < 0)
+                {
+                    AddThrustToThrusterGroup(ref backwardThrusters, forceAmount);
+                }
+                // AddThrustToThrusterGroup(ref forwardThrusters, forceAmount);
 
             }
         }

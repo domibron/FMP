@@ -23,6 +23,7 @@ public class InputHandler : MonoBehaviour
 
     public Vector3 GetMoveInputVector()
     {
+        // print(moveAction.ReadValue<Vector3>());
         return moveAction.ReadValue<Vector3>();
     }
 

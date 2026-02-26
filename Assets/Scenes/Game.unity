@@ -1833,6 +1833,7 @@ MonoBehaviour:
   - {fileID: 1118045968}
   - {fileID: 405199540}
   - {fileID: 1665658710}
+  infFuel: 1
 --- !u!1 &336201898
 GameObject:
   m_ObjectHideFlags: 0

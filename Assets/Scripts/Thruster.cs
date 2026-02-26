@@ -74,7 +74,9 @@ public class Thruster : ComponentBase
 
     public Vector3 GetForceDirection()
     {
-        return -forceDirection.normalized;
+        // Debug.DrawLine(transform.position, transform.position + Quaternion.Inverse(transform.localRotation) * -forceDirection.normalized, Color.red);
+        return Quaternion.Inverse(transform.localRotation) * -forceDirection.normalized;
+        // return transform.TransformDirection(-forceDirection.normalized);
     }
 
     void OnDrawGizmos()
