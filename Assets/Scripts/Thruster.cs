@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Thruster : ComponentBase
 {
-    [SerializeField]
-    private Rigidbody shipRb;
+    [SerializeField, Header("Thruster")]
+    private Rigidbody rb;
 
     [SerializeField]
     private Vector3 forceDirection;
@@ -48,12 +48,12 @@ public class Thruster : ComponentBase
         {
             if (fuelTank.Consume(targetForce * Time.deltaTime * consumptionPerForce))
             {
-                shipRb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
+                rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
             }
         }
         else // fuel tank broken but still allow flight.
         {
-            shipRb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
+            rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
         }
     }
 
@@ -63,12 +63,12 @@ public class Thruster : ComponentBase
         {
             if (fuelTank.Consume(force * consumptionPerForce))
             {
-                shipRb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * force, transform.position, ForceMode.Impulse);
+                rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * force, transform.position, ForceMode.Impulse);
             }
         }
         else // fuel tank broken but still allow flight.
         {
-            shipRb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * force, transform.position, ForceMode.Impulse);
+            rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * force, transform.position, ForceMode.Impulse);
         }
     }
 
