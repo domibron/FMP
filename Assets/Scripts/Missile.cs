@@ -11,6 +11,8 @@ public class Missile : ComponentBase, IActivateable
 
     Rigidbody rb;
 
+    float ejectionForce = 15f;
+
     protected override void Awake()
     {
         base.Awake();
@@ -33,8 +35,16 @@ public class Missile : ComponentBase, IActivateable
     public void Activate()
     {
         isActive = true;
-        transform.parent = null;
         rb.isKinematic = false;
+
+        if (transform.parent != null && transform.parent.GetComponentInParent<Rigidbody>() != null)
+        {
+            rb.linearVelocity = transform.parent.GetComponentInParent<Rigidbody>().linearVelocity + ((-transform.up) * ejectionForce);
+            // print("vel " + (transform.parent.GetComponentInParent<Rigidbody>().linearVelocity + ((-transform.up) * 15f)));
+        }
+
+        thruster.SetThrusterForce(360f);
+        transform.parent = null;
         // activate thruster.
     }
 }
