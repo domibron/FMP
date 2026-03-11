@@ -83,6 +83,8 @@ public class FlightController : MonoBehaviour
 
     Rigidbody rb;
 
+    const float MOUSE_MAX_PULSE = 1f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -153,11 +155,15 @@ public class FlightController : MonoBehaviour
         {
             float amount = Mathf.Abs(look.x);
 
+            amount = Mathf.Clamp(amount, 0, MOUSE_MAX_PULSE);
+
             PulseThrusterGroup(ref yawRightThrusters, forceAmount * amount * Time.deltaTime);
         }
         else if (look.x < -0.1f)
         {
             float amount = Mathf.Abs(look.x);
+
+            amount = Mathf.Clamp(amount, 0, MOUSE_MAX_PULSE);
 
             PulseThrusterGroup(ref yawLeftThrusters, forceAmount * amount * Time.deltaTime);
         }
@@ -168,11 +174,15 @@ public class FlightController : MonoBehaviour
         {
             float amount = Mathf.Abs(look.y);
 
+            amount = Mathf.Clamp(amount, 0, MOUSE_MAX_PULSE);
+
             PulseThrusterGroup(ref pitchUpThrusters, forceAmount * amount * Time.deltaTime);
         }
         else if (look.y < -0.1f)
         {
             float amount = Mathf.Abs(look.y);
+
+            amount = Mathf.Clamp(amount, 0, MOUSE_MAX_PULSE);
 
             PulseThrusterGroup(ref pitchDownThrusters, forceAmount * amount * Time.deltaTime);
         }

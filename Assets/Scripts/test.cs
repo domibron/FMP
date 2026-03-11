@@ -31,7 +31,7 @@ public class test : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // get the needed rotational angle.
 
@@ -72,14 +72,43 @@ public class test : MonoBehaviour
 
         // print("dir to targ " + directionToTarget);
 
+        Vector3 forward = rb.transform.forward.normalized;
+        Vector3 targetDir = (target.position - rb.transform.position).normalized;
+
+        Vector3 angleAxis = Vector3.Cross(forward, targetDir);
+        angleAxis = rb.transform.InverseTransformDirection(angleAxis);
 
 
-        AngleThrusterToTarget(GetInputVector(target.position));
+        float angle = (Mathf.Acos(Vector3.Dot(forward, targetDir))) / (targetDir.magnitude * forward.magnitude);
+
+        Vector3 rotationAngle = angleAxis.normalized * angle;// in rads, also angular vel is in rads too.
+
+        Debug.DrawLine(rb.transform.position, rb.transform.position + angleAxis.normalized, Color.blue);
+
+        // print("ROT " + rotationAngle + " cur anvel " + rb.transform.InverseTransformDirection(rb.angularVelocity));
+
+        Vector3 localAngularVel = rb.transform.InverseTransformDirection(rb.angularVelocity);
+
+        float AngleAgressive = (angle * Mathf.Rad2Deg) / maxAngle;
+        Vector3 diff = (rotationAngle * 2f).normalized - localAngularVel.normalized;
+
+        Vector2 input = new Vector3(diff.y, -diff.x).normalized * AngleAgressive;
+
+        AngleThrusterToTarget(input);
+
+        print(input + " - " + diff + "  , " + rotationAngle.normalized + " . " + localAngularVel.normalized);
+
+        // Quaternion CurrentRot = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        // Quaternion TargetRot = Quaternion.FromToRotation(forward, targetDir) * CurrentRot;
+
+        // AngleThrusterToTarget(GetInputVector(target.position));
+
+        // AngleThrusterToTarget(new Vector2(x, y));
 
         // AngleThrusterToTarget(displacement2D);
 
         Vector3 rot = GetTorque(thruster);
-        print(rot + " ? " + Vector3.Angle(thruster.transform.forward, rb.transform.forward));
+        // print(rot + " ? " + Vector3.Angle(thruster.transform.forward, rb.transform.forward));
     }
 
     private Vector2 GetInputVector(Vector3 targetPosWorld)
@@ -101,6 +130,7 @@ public class test : MonoBehaviour
         float XRotationalVel = -angularRotation.y;
         float YRotationalVel = angularRotation.x;
 
+        if (Mathf.Abs(XAngleNeeded) < 0.1f) print("FUCK");
 
         // float xFinal = (Mathf.Asin(XDot) * Mathf.Rad2Deg) / maxAngle;
         // float yFinal = (Mathf.Asin(YDot) * Mathf.Rad2Deg) / maxAngle;

@@ -11587,8 +11587,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6147853048736890682, guid: 2df4eda926a812046a844623480e246d, type: 3}
-      propertyPath: m_ImplicitTensor
-      value: 1
+      propertyPath: m_AngularDamping
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6286261571966595397, guid: 2df4eda926a812046a844623480e246d, type: 3}
       propertyPath: m_LocalPosition.x
