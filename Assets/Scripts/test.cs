@@ -90,7 +90,7 @@ public class test : MonoBehaviour
         Vector3 localAngularVel = rb.transform.InverseTransformDirection(rb.angularVelocity);
 
         float AngleAgressive = (angle * Mathf.Rad2Deg) / maxAngle;
-        Vector3 diff = (rotationAngle * 2f).normalized - localAngularVel.normalized;
+        Vector3 diff = (rotationAngle).normalized - localAngularVel.normalized;
 
         Vector2 input = new Vector3(diff.y, -diff.x).normalized * AngleAgressive;
 
