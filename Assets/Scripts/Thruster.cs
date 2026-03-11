@@ -79,6 +79,11 @@ public class Thruster : ComponentBase
         // return transform.TransformDirection(-forceDirection.normalized);
     }
 
+    public Vector3 GetForceDirectionVector()
+    {
+        return -forceDirection.normalized;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + (transform.TransformDirection(forceDirection.normalized) * 3f));

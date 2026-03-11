@@ -13,6 +13,12 @@ public class Missile : ComponentBase, IActivateable
 
     float ejectionForce = 15f;
 
+    [SerializeField]
+    float missileSpeed = 360f;
+
+    [SerializeField]
+    bool DebugActivate = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -22,8 +28,8 @@ public class Missile : ComponentBase, IActivateable
 
     void Update()
     {
-        if (isActive)
-            thruster.SetThrusterForce(360f);
+        if (isActive || DebugActivate)
+            thruster.SetThrusterForce(missileSpeed);
     }
 
     public void SetUpMissile(Antenna antenna)
@@ -43,7 +49,7 @@ public class Missile : ComponentBase, IActivateable
             // print("vel " + (transform.parent.GetComponentInParent<Rigidbody>().linearVelocity + ((-transform.up) * 15f)));
         }
 
-        thruster.SetThrusterForce(360f);
+        thruster.SetThrusterForce(missileSpeed);
         transform.parent = null;
         // activate thruster.
     }

@@ -101,7 +101,7 @@ public class FlightController : MonoBehaviour
         RotationalThrust(currentLookVector);
 
         Vector3 linearVelocity = rb.linearVelocity;
-        Vector3 angularVelocity = transform.InverseTransformDirection(rb.angularVelocity);
+        Vector3 angularVelocity = rb.angularVelocity;
         // print(DateTime.Now.ToString());
         // print(linearVelocity);
         LinearInertiaDampening(currentInputVector, linearVelocity);
@@ -198,7 +198,7 @@ public class FlightController : MonoBehaviour
     void RotationalInertiaDampening(Vector3 inputLookVector, Vector3 currentAngularVelocity)
     {
         // Vector3 velocityInLocal = Quaternion.Inverse(rb.transform.rotation) * currentAngularVelocity;
-        Vector3 velocityInLocal = currentAngularVelocity;
+        Vector3 velocityInLocal = transform.InverseTransformDirection(currentAngularVelocity);
 
         Vector3 convertedInputToRotationalVector = new Vector3(-inputLookVector.y, inputLookVector.x, -inputLookVector.z);
 
