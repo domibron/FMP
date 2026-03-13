@@ -48,12 +48,12 @@ public class Thruster : ComponentBase
         {
             if (fuelTank.Consume(targetForce * Time.deltaTime * consumptionPerForce))
             {
-                rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
+                rb.AddForceAtPosition(transform.TransformDirection(GetForceDirectionVector()) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
             }
         }
         else // fuel tank broken but still allow flight.
         {
-            rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
+            rb.AddForceAtPosition(transform.TransformDirection(GetForceDirectionVector()) * targetForce * Time.deltaTime, transform.position, ForceMode.Impulse);
         }
     }
 
@@ -63,19 +63,19 @@ public class Thruster : ComponentBase
         {
             if (fuelTank.Consume(force * consumptionPerForce))
             {
-                rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * force, transform.position, ForceMode.Impulse);
+                rb.AddForceAtPosition(transform.TransformDirection(GetForceDirectionVector()) * force, transform.position, ForceMode.Impulse);
             }
         }
         else // fuel tank broken but still allow flight.
         {
-            rb.AddForceAtPosition(transform.TransformDirection(-forceDirection.normalized) * force, transform.position, ForceMode.Impulse);
+            rb.AddForceAtPosition(transform.TransformDirection(GetForceDirectionVector()) * force, transform.position, ForceMode.Impulse);
         }
     }
 
     public Vector3 GetForceDirection()
     {
         // Debug.DrawLine(transform.position, transform.position + Quaternion.Inverse(transform.localRotation) * -forceDirection.normalized, Color.red);
-        return Quaternion.Inverse(transform.localRotation) * -forceDirection.normalized;
+        return Quaternion.Inverse(transform.localRotation) * GetForceDirectionVector();
         // return transform.TransformDirection(-forceDirection.normalized);
     }
 

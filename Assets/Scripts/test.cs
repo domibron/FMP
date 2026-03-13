@@ -16,7 +16,7 @@ public class test : MonoBehaviour
     [SerializeField, Range(-1, 1)]
     float y = 0;
 
-    float maxAngle = 45;
+    float maxAngle = 80;
 
     [SerializeField]
     Transform thrusterY;
@@ -73,42 +73,64 @@ public class test : MonoBehaviour
         // print("dir to targ " + directionToTarget);
 
         Vector3 forward = rb.transform.forward.normalized;
-        Vector3 targetDir = (target.position - rb.transform.position).normalized;
+        Vector3 targetDir = (target.position - (rb.transform.position + rb.linearVelocity));
 
-        Vector3 angleAxis = Vector3.Cross(forward, targetDir);
-        angleAxis = rb.transform.InverseTransformDirection(angleAxis);
+        Vector3 linierVelToCancel = ((target.position - (rb.transform.position + rb.linearVelocity)) - rb.linearVelocity);
 
+        // Velocity is not being fully cancelled out and we need to remove it.
 
-        float angle = (Mathf.Acos(Vector3.Dot(forward, targetDir))) / (targetDir.magnitude * forward.magnitude);
+        Vector3 rotationAngle = GetRotationAtoBLocal(forward, targetDir.normalized);
+        Vector3 velAngle = GetRotationAtoBLocal(forward, linierVelToCancel.normalized);
 
-        Vector3 rotationAngle = angleAxis.normalized * angle;// in rads, also angular vel is in rads too.
+        // Vector3 finalRot = (rotationAngle + velAngle);
+        Vector3 finalRot = velAngle;
 
-        Debug.DrawLine(rb.transform.position, rb.transform.position + angleAxis.normalized, Color.blue);
+        // Debug.DrawLine(rb.transform.position, rb.transform.position + rotationAngle.normalized, Color.blue);
 
         // print("ROT " + rotationAngle + " cur anvel " + rb.transform.InverseTransformDirection(rb.angularVelocity));
 
         Vector3 localAngularVel = rb.transform.InverseTransformDirection(rb.angularVelocity);
 
-        float AngleAgressive = (angle * Mathf.Rad2Deg) / maxAngle;
-        Vector3 diff = (rotationAngle).normalized - localAngularVel.normalized;
+        Vector3 neededAngularChange = finalRot - localAngularVel;
+        Vector2 angularCounterInputRot = new Vector2(neededAngularChange.y, -neededAngularChange.x);
 
-        Vector2 input = new Vector3(diff.y, -diff.x).normalized * AngleAgressive;
+        AngleThrusterToTarget(angularCounterInputRot.normalized * 1f);
+        Vector3 torque = GetTorque(thruster);
 
-        AngleThrusterToTarget(input);
+        float magNeed = (angularCounterInputRot.magnitude / (torque.magnitude * Time.fixedDeltaTime));
+        // print(angle + " " + (torque.magnitude * Time.fixedDeltaTime) + "  -  " + magNeed);
+        // print(magNeed);
+        angularCounterInputRot = angularCounterInputRot.normalized * magNeed;
 
-        print(input + " - " + diff + "  , " + rotationAngle.normalized + " . " + localAngularVel.normalized);
 
-        // Quaternion CurrentRot = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-        // Quaternion TargetRot = Quaternion.FromToRotation(forward, targetDir) * CurrentRot;
 
-        // AngleThrusterToTarget(GetInputVector(target.position));
 
-        // AngleThrusterToTarget(new Vector2(x, y));
+        // Vector3 
 
-        // AngleThrusterToTarget(displacement2D);
+        AngleThrusterToTarget(angularCounterInputRot);
+
+        // float AngleAgressive = (angle * Mathf.Rad2Deg) / maxAngle;
+        // Vector3 diff = (rotationAngle).normalized - localAngularVel.normalized;
+        // Vector2 input = new Vector3(diff.y, -diff.x).normalized * AngleAgressive;
+
+        // AngleThrusterToTarget(input);
+
+        // print(input + " - " + diff + "  , " + rotationAngle.normalized + " . " + localAngularVel.normalized);
+
 
         Vector3 rot = GetTorque(thruster);
-        // print(rot + " ? " + Vector3.Angle(thruster.transform.forward, rb.transform.forward));
+        print("torque = " + rot);
+    }
+
+    private Vector3 GetRotationAtoBLocal(Vector3 dirA, Vector3 dirB)
+    {
+        Vector3 angleAxisAngular = Vector3.Cross(dirA, dirB);
+        angleAxisAngular = rb.transform.InverseTransformDirection(angleAxisAngular);
+
+
+        float angle = (Mathf.Acos(Vector3.Dot(dirA, dirB))) / (dirB.magnitude * dirA.magnitude);
+        // print("angle = " + angle);
+        return angleAxisAngular * angle;// in rads, also angular vel is in rads too.
     }
 
     private Vector2 GetInputVector(Vector3 targetPosWorld)
@@ -168,7 +190,7 @@ public class test : MonoBehaviour
         float inertia = rb.mass * Mathf.Pow(displacement.magnitude, 2f);
 
         // average out the torque from all thrusters. here before the final calc.
-        // Res is in rads and NOT in degrees. ~ rads as in radiation? ~ no, as in radians!
+        // Result is in rads and NOT in degrees. ~ rads as in radiation? ~ no, as in radians!
         // Vector3 angularDisplacement = torque / inertia;
 
         // Vector3 angularVelocity = angularDisplacement * Time.deltaTime;
