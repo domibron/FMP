@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class test : MonoBehaviour
@@ -23,6 +24,8 @@ public class test : MonoBehaviour
 
     [SerializeField]
     Transform target;
+
+    const float MAX_ANG_VEL = 30f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -73,17 +76,31 @@ public class test : MonoBehaviour
         // print("dir to targ " + directionToTarget);
 
         Vector3 forward = rb.transform.forward.normalized;
-        Vector3 targetDir = (target.position - (rb.transform.position + rb.linearVelocity));
+        Vector3 targetDir = ((target.position) - (rb.transform.position + rb.linearVelocity));
 
-        Vector3 linierVelToCancel = ((target.position - (rb.transform.position + rb.linearVelocity)) - rb.linearVelocity);
+        // Vector3 linierVelToCancel = ((target.position - (rb.transform.position)) - rb.linearVelocity);
+        Vector3 localRBVel = rb.transform.InverseTransformDirection(rb.linearVelocity);
+        Vector3 targetInLocal = target.position - (rb.transform.position);
+        // Vector3 rotToTargInLocal = GetRotationAtoBLocal(forward, (target.position - rb.transform.position).normalized);
+        // print("Targ dir " + rotToTargInLocal);
 
+        Vector3 linierVelToCancel = (targetInLocal - rb.linearVelocity) - rb.linearVelocity;
+        // print(linierVelToCancel);
+        Debug.DrawLine(rb.transform.position, rb.transform.position + linierVelToCancel, Color.blue);
+        Debug.DrawLine(rb.transform.position, rb.transform.position + (targetInLocal), Color.red);
+        Debug.DrawLine(rb.transform.position, rb.transform.position + rb.linearVelocity, Color.green);
         // Velocity is not being fully cancelled out and we need to remove it.
 
-        Vector3 rotationAngle = GetRotationAtoBLocal(forward, targetDir.normalized);
-        Vector3 velAngle = GetRotationAtoBLocal(forward, linierVelToCancel.normalized);
+        Vector3 rotationAngle = GetRotationAtoB(rb.transform.forward, targetDir);
+        Vector3 velAngle = GetRotationAtoB(rb.transform.forward, linierVelToCancel);
+        Vector3 CounterLin = GetRotationAtoB(rb.transform.forward, -rb.linearVelocity);
 
         // Vector3 finalRot = (rotationAngle + velAngle);
-        Vector3 finalRot = velAngle;
+        // Vector3 finalRot = velAngle;
+        Vector3 finalRot = (velAngle + rotationAngle + CounterLin) / 3f;
+        Debug.DrawLine(rb.transform.position, rb.transform.position + (Quaternion.Euler(finalRot) * rb.transform.forward * 3f), Color.orange);
+
+        print(rb.angularVelocity * Mathf.Rad2Deg);
 
         // Debug.DrawLine(rb.transform.position, rb.transform.position + rotationAngle.normalized, Color.blue);
 
@@ -91,7 +108,8 @@ public class test : MonoBehaviour
 
         Vector3 localAngularVel = rb.transform.InverseTransformDirection(rb.angularVelocity);
 
-        Vector3 neededAngularChange = finalRot - localAngularVel;
+        // if (finalRot.magnitude > MAX_ANG_VEL) finalRot = finalRot.normalized * MAX_ANG_VEL;
+        Vector3 neededAngularChange = finalRot;// - (localAngularVel * Mathf.Rad2Deg);
         Vector2 angularCounterInputRot = new Vector2(neededAngularChange.y, -neededAngularChange.x);
 
         AngleThrusterToTarget(angularCounterInputRot.normalized * 1f);
@@ -118,12 +136,15 @@ public class test : MonoBehaviour
         // print(input + " - " + diff + "  , " + rotationAngle.normalized + " . " + localAngularVel.normalized);
 
 
-        Vector3 rot = GetTorque(thruster);
-        print("torque = " + rot);
+        // Vector3 rot = GetTorque(thruster);
+        // print("torque = " + rot);
     }
 
     private Vector3 GetRotationAtoBLocal(Vector3 dirA, Vector3 dirB)
     {
+        dirA.Normalize();
+        dirB.Normalize();
+
         Vector3 angleAxisAngular = Vector3.Cross(dirA, dirB);
         angleAxisAngular = rb.transform.InverseTransformDirection(angleAxisAngular);
 
@@ -131,6 +152,20 @@ public class test : MonoBehaviour
         float angle = (Mathf.Acos(Vector3.Dot(dirA, dirB))) / (dirB.magnitude * dirA.magnitude);
         // print("angle = " + angle);
         return angleAxisAngular * angle;// in rads, also angular vel is in rads too.
+    }
+
+    private Vector3 GetRotationAtoB(Vector3 dirA, Vector3 dirB)
+    {
+        dirA.Normalize();
+        dirB.Normalize();
+
+        Vector3 angleAxisAngular = Vector3.Cross(dirA, dirB);
+        // angleAxisAngular = rb.transform.InverseTransformDirection(angleAxisAngular);
+
+
+        float angle = (Mathf.Acos(Vector3.Dot(dirA, dirB))) / (dirB.magnitude * dirA.magnitude);
+        // print("angle = " + angle);
+        return angleAxisAngular * (angle * Mathf.Rad2Deg);// in rads, also angular vel is in rads too.
     }
 
     private Vector2 GetInputVector(Vector3 targetPosWorld)
