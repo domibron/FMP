@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public class TrackingData
 {
     public Collider lockedTarget;
@@ -42,9 +44,21 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         hasLock = lockedTarget != null;
     }
 
+    // void OnGUI()
+    // {
+    //     GUILayout.Label($"<size={Screen.height / 20f}>Locked: {hasLock}");
+    //     if (hasLock)
+    //     {
+    //         GUILayout.Label($"<size={Screen.height / 20f}>Target Name: {lockedTarget.transform.parent?.name}");
+    //         GUILayout.Label($"<size={Screen.height / 20f}>Target Pos: {lockedTarget.transform.position}");
+    //         GUILayout.Label($"<size={Screen.height / 20f}>Target Type: {lockedTarget.tag}");
+    //     }
+    // }
+
     void UpdateStoredTargets()
     {
         // failure to read data, so data is null.
+
         if (string.IsNullOrEmpty(radar.ReadData())) detectedEntities = new Collider[0];
 
         detectedEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
@@ -59,6 +73,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         foreach (Collider collider in detectedEntities)
         {
             if (collider == null) continue;
+            if (collider.tag != Constants.SHIP_TAG) continue;
 
             if (closestCol == null)
             {
@@ -94,11 +109,13 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
 
     public string ReadData()
     {
-        return JsonUtility.ToJson(new TrackingData()
+        TrackingData data = new TrackingData()
         {
             lockedTarget = lockedTarget,
             storedDetectedTargets = detectedEntities,
             hasLock = hasLock,
-        });
+        };
+
+        return JsonUtility.ToJson(data);
     }
 }

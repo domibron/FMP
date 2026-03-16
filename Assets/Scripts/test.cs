@@ -35,79 +35,29 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        // get the needed rotational angle.
-
-        // plug that in.
-
-
-        // Vector 3 rotation is in world space. we need the diff in local.
-        // Vector3 displacementFromTarget = Vector3.Cross((target.position - rb.transform.position).normalized, rb.transform.forward).normalized;
-        // displacementFromTarget = displacementFromTarget * Vector3.Angle((target.position - rb.transform.position).normalized, rb.transform.forward.normalized);
-        // print("Dis " + displacementFromTarget);
-
-        // Vector2 displacement2D = new Vector2(-displacementFromTarget.y, displacementFromTarget.x);
-
-        // displacement2D /= maxAngle;
-
-
-
-        // XDot *= 90f;
-        // YDot *= 90f;
-
-        // XDot /= maxAngle;
-        // YDot /= maxAngle;
-
-        // print("DOTS: " + (Mathf.Asin(XDot) * Mathf.Rad2Deg) / maxAngle + ", " + (Mathf.Asin(YDot) * Mathf.Rad2Deg) / maxAngle);
-
-        // Vector3 forward = rb.transform.InverseTransformDirection(rb.transform.forward);
-
-        // Debug.DrawLine(rb.transform.position, rb.transform.position + rb.transform.TransformDirection(Vector3.Cross(forward, directionToTarget)));
-
-        // float angle = Vector3.Angle(directionToTarget, forward);
-        // // print("asdasda " + directionToTarget);
-
-        // float mag = directionToTarget.magnitude;
-        // directionToTarget.z = 0;
-        // directionToTarget.Normalize();
-
-        // take target and use max angle as direction to target is in 180 sections.
-
-        // print("dir to targ " + directionToTarget);
-
-        Vector3 forward = rb.transform.forward.normalized;
-        Vector3 targetDir = ((target.position) - (rb.transform.position + rb.linearVelocity));
-
-        // Vector3 linierVelToCancel = ((target.position - (rb.transform.position)) - rb.linearVelocity);
-        Vector3 localRBVel = rb.transform.InverseTransformDirection(rb.linearVelocity);
-        Vector3 targetInLocal = target.position - (rb.transform.position);
-        // Vector3 rotToTargInLocal = GetRotationAtoBLocal(forward, (target.position - rb.transform.position).normalized);
-        // print("Targ dir " + rotToTargInLocal);
+        Vector3 targetInLocal = target.position - rb.transform.position;
 
         Vector3 linierVelToCancel = (targetInLocal - rb.linearVelocity) - rb.linearVelocity;
-        // print(linierVelToCancel);
+
+
+        // * DEBUG Visual
         Debug.DrawLine(rb.transform.position, rb.transform.position + linierVelToCancel, Color.blue);
         Debug.DrawLine(rb.transform.position, rb.transform.position + (targetInLocal), Color.red);
         Debug.DrawLine(rb.transform.position, rb.transform.position + rb.linearVelocity, Color.green);
-        // Velocity is not being fully cancelled out and we need to remove it.
 
-        Vector3 rotationAngle = GetRotationAtoB(rb.transform.forward, targetDir);
+
+        Vector3 rotationAngle = GetRotationAtoB(rb.transform.forward, target.position - rb.transform.position);
         Vector3 velAngle = GetRotationAtoB(rb.transform.forward, linierVelToCancel);
         Vector3 CounterLin = GetRotationAtoB(rb.transform.forward, -rb.linearVelocity);
 
-        // Vector3 finalRot = (rotationAngle + velAngle);
-        // Vector3 finalRot = velAngle;
+
         Vector3 finalRot = (velAngle + rotationAngle + CounterLin) / 3f;
         Debug.DrawLine(rb.transform.position, rb.transform.position + (Quaternion.Euler(finalRot) * rb.transform.forward * 3f), Color.orange);
 
-        print(rb.angularVelocity * Mathf.Rad2Deg);
-
-        // Debug.DrawLine(rb.transform.position, rb.transform.position + rotationAngle.normalized, Color.blue);
-
-        // print("ROT " + rotationAngle + " cur anvel " + rb.transform.InverseTransformDirection(rb.angularVelocity));
-
         Vector3 localAngularVel = rb.transform.InverseTransformDirection(rb.angularVelocity);
+        // Calculate the deaccel.
 
-        // if (finalRot.magnitude > MAX_ANG_VEL) finalRot = finalRot.normalized * MAX_ANG_VEL;
+        // TODO: need to calulate the deaccel and use that against the angular accel to know when we need to start slowing down.
         Vector3 neededAngularChange = finalRot;// - (localAngularVel * Mathf.Rad2Deg);
         Vector2 angularCounterInputRot = new Vector2(neededAngularChange.y, -neededAngularChange.x);
 
@@ -169,7 +119,7 @@ public class test : MonoBehaviour
 
     private Vector2 GetInputVector(Vector3 targetPosWorld)
     {
-        const float MAX_TURN_RATE = 30f;
+        // const float MAX_TURN_RATE = 30f;
 
         Vector3 directionToTarget = rb.transform.InverseTransformDirection(targetPosWorld - rb.transform.position);
 

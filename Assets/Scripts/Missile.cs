@@ -19,6 +19,17 @@ public class Missile : ComponentBase, IActivateable
     [SerializeField]
     bool DebugActivate = false;
 
+    Vector3? target = null;
+
+    bool armed = false;
+
+    float minDistanceToArm = 5f;
+
+    float currentAliveTime = 0;
+
+    const float MAX_ALIVE_TIME = 60f; // seconds
+    const float MIN_DETONATION_DIST = 3f; // seconds
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,24 +39,85 @@ public class Missile : ComponentBase, IActivateable
 
     void Update()
     {
-        if (isActive || DebugActivate)
-            thruster.SetThrusterForce(missileSpeed);
+        // acquire target.
+        if (antenna == null)
+        {
+            target = null;
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(antenna.GetData(rb.transform.position)))
+            {
+                target = null;
+            }
+            else
+            {
+                // Should have antenna to antenna interaction but this roughly simulates that anyway.
+                AntennaData data = JsonUtility.FromJson<AntennaData>(antenna.GetData(rb.transform.position));
+                // print(antenna.GetData(rb.transform.position));
+                target = data.validTarget ? data.target : null;
+            }
+        }
+
+        if (!isActive && !DebugActivate) return;
+
+        thruster.SetThrusterForce(missileSpeed);
+
+        currentAliveTime += Time.deltaTime;
+
+        if (currentAliveTime >= MAX_ALIVE_TIME)
+        {
+            // EXPLODE!
+
+            return;
+        }
+
+        // can we arm?
+        if (!armed)
+        {
+            if (Vector3.Distance(antenna.transform.position, rb.transform.position) > minDistanceToArm)
+            {
+                armed = true;
+            }
+            else
+            {
+                return; // Cannot do anything.
+            }
+        }
+
+
+
+
+        if (target != null)
+        {
+            rb.transform.LookAt(target.Value - rb.linearVelocity);
+
+            if (Vector3.Distance(target.Value, rb.transform.position) <= MIN_DETONATION_DIST)
+            {
+                // EXPLODE!
+
+            }
+        }
+
     }
+
 
     public void SetUpMissile(Antenna antenna)
     {
+        // link the missile.
         this.antenna = antenna;
         isActive = false;
     }
 
     public void Activate()
     {
+        if (isActive) return;
         isActive = true;
-        rb.isKinematic = false;
+        rb.isKinematic = false; // This first before doing any velocity stuff as kinematic will remove all our velocity stuff if disabled after it.
 
         if (transform.parent != null && transform.parent.GetComponentInParent<Rigidbody>() != null)
         {
-            rb.linearVelocity = transform.parent.GetComponentInParent<Rigidbody>().linearVelocity + ((-transform.up) * ejectionForce);
+            rb.linearVelocity = transform.parent.GetComponentInParent<Rigidbody>().linearVelocity + ((-transform.up) * ejectionForce) + rb.transform.forward * missileSpeed;
             // print("vel " + (transform.parent.GetComponentInParent<Rigidbody>().linearVelocity + ((-transform.up) * 15f)));
         }
 
@@ -53,4 +125,6 @@ public class Missile : ComponentBase, IActivateable
         transform.parent = null;
         // activate thruster.
     }
+
+
 }

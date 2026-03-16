@@ -13,7 +13,12 @@ public class MissileMount : ComponentBase, IDataReadable, IActivateable
     [SerializeField]
     Transform missileMountPoint;
 
+    [SerializeField]
+    Antenna antenna;
+
     Missile missile;
+
+
 
     void Start()
     {
@@ -27,6 +32,7 @@ public class MissileMount : ComponentBase, IDataReadable, IActivateable
         GameObject missileGO = Instantiate(missilePrefab, missileMountPoint.position, missileMountPoint.rotation);
         missileGO.transform.parent = transform;
         missile = missileGO.GetComponent<Missile>();
+        missile.SetUpMissile(antenna);
     }
 
     public void Activate()

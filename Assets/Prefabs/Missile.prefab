@@ -517,7 +517,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 2
-  m_Constraints: 64
+  m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!114 &5106492705388626616
 MonoBehaviour:
@@ -533,6 +533,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Missile
   maxHealth: 100
   thruster: {fileID: 570804328983682070}
+  missileSpeed: 360
+  DebugActivate: 0
 --- !u!1001 &116473188137438107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -544,6 +546,18 @@ PrefabInstance:
     - target: {fileID: 2496037064986123719, guid: 3ea076c17fed1a94ebac2118e61e7330, type: 3}
       propertyPath: m_Name
       value: ThrusterParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235400526865379917, guid: 3ea076c17fed1a94ebac2118e61e7330, type: 3}
+      propertyPath: InheritVelocityModule.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235400526865379917, guid: 3ea076c17fed1a94ebac2118e61e7330, type: 3}
+      propertyPath: InheritVelocityModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6235400526865379917, guid: 3ea076c17fed1a94ebac2118e61e7330, type: 3}
+      propertyPath: InheritVelocityModule.m_Curve.scalar
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8909379508029083312, guid: 3ea076c17fed1a94ebac2118e61e7330, type: 3}
       propertyPath: m_LocalPosition.x
