@@ -154,6 +154,7 @@ GameObject:
   - component: {fileID: 1040781234769913843}
   - component: {fileID: 1912648518143710345}
   - component: {fileID: 2261849228484688772}
+  - component: {fileID: -2945565249552146896}
   m_Layer: 3
   m_Name: Bullet
   m_TagString: Untagged
@@ -219,12 +220,12 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 76
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &2261849228484688772
@@ -240,3 +241,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestroyOverTime
   destroyAfter: 5
+--- !u!114 &-2945565249552146896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1669434256044278200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0151376c147f06a48932a9fd6025b593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bullet
+  depth: 3
+  damage: 100
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 385

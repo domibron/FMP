@@ -39,7 +39,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     {
         UpdateStoredTargets();
 
-        TryLockTargetNearCenter();
+        // TryLockTargetNearCenter();
 
         hasLock = lockedTarget != null;
     }
@@ -59,16 +59,20 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     {
         // failure to read data, so data is null.
 
-        if (string.IsNullOrEmpty(radar.ReadData())) detectedEntities = new Collider[0];
-
-        detectedEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
+        if (string.IsNullOrEmpty(radar.ReadData()))
+            detectedEntities = Array.Empty<Collider>();
+        else
+            detectedEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
     }
 
-    void TryLockTargetNearCenter()
+    public void TryLockTargetNearCenter()
     {
         // * chache if using out of order since the list can update whilst iterating.
         float closestAngle = float.MaxValue;
         Collider closestCol = null;
+
+        if (detectedEntities == null) return;
+        if (detectedEntities.Length <= 0) return;
 
         foreach (Collider collider in detectedEntities)
         {

@@ -16,35 +16,24 @@ public class Antenna : ComponentBase
     [SerializeField]
     TrackingSystem trackingSystem;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public string GetData(Vector3 callerWorldPosition)
     {
         if (destroyed)
         {
-            print("destroyed");
+            // print("destroyed");
             return string.Empty;
         }
 
         if (Vector3.Distance(callerWorldPosition, transform.position) > maxRange)
         {
-            print("out of range");
+            // print("out of range");
             return string.Empty;
         }
 
         if (string.IsNullOrEmpty(trackingSystem.ReadData()))
         {
-            print("cannot get data");
+            // print("cannot get data");
             return string.Empty;
         }
 
@@ -54,7 +43,7 @@ public class Antenna : ComponentBase
 
         if (!data.hasLock)
         {
-            print("No lock");
+            // print("No lock");
             return JsonUtility.ToJson(new AntennaData()
             {
                 target = Vector3.zero,

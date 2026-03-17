@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Missile : ComponentBase, IActivateable
@@ -27,6 +28,12 @@ public class Missile : ComponentBase, IActivateable
 
     float currentAliveTime = 0;
 
+    [SerializeField]
+    TrackingSystem trackingSystem;
+
+    [SerializeField]
+    Warhead warhead;
+
     const float MAX_ALIVE_TIME = 60f; // seconds
     const float MIN_DETONATION_DIST = 3f; // seconds
 
@@ -35,6 +42,13 @@ public class Missile : ComponentBase, IActivateable
         base.Awake();
 
         rb = GetComponent<Rigidbody>();
+
+        warhead.OnDetonation += OnDetonation;
+    }
+
+    private void OnDetonation()
+    {
+        Destroy(gameObject);
     }
 
     void Update()
@@ -42,20 +56,39 @@ public class Missile : ComponentBase, IActivateable
         // acquire target.
         if (antenna == null)
         {
-            target = null;
+            // Try and use self acquire target.
+
+            if (string.IsNullOrEmpty(trackingSystem.ReadData()))
+            {
+                // target = null;
+            }
+            else
+            {
+                TrackingData data = JsonUtility.FromJson<TrackingData>(trackingSystem.ReadData());
+
+                if (data.hasLock)
+                {
+                    target = data.lockedTarget.transform.position;
+                }
+                else
+                {
+                    // target = null;
+                }
+            }
         }
         else
         {
             if (string.IsNullOrEmpty(antenna.GetData(rb.transform.position)))
             {
-                target = null;
+                // target = null;
             }
             else
             {
                 // Should have antenna to antenna interaction but this roughly simulates that anyway.
                 AntennaData data = JsonUtility.FromJson<AntennaData>(antenna.GetData(rb.transform.position));
                 // print(antenna.GetData(rb.transform.position));
-                target = data.validTarget ? data.target : null;
+                // target = data.validTarget ? data.target : null;
+                if (data.validTarget) target = data.target;
             }
         }
 
@@ -68,7 +101,7 @@ public class Missile : ComponentBase, IActivateable
         if (currentAliveTime >= MAX_ALIVE_TIME)
         {
             // EXPLODE!
-
+            Explode();
             return;
         }
 
@@ -78,6 +111,7 @@ public class Missile : ComponentBase, IActivateable
             if (Vector3.Distance(antenna.transform.position, rb.transform.position) > minDistanceToArm)
             {
                 armed = true;
+                warhead.Arm();
             }
             else
             {
@@ -85,22 +119,25 @@ public class Missile : ComponentBase, IActivateable
             }
         }
 
-
-
-
         if (target != null)
         {
             rb.transform.LookAt(target.Value - rb.linearVelocity);
 
+            // rb.transform.LookAt(transform.position + (target.Value - (transform.position + rb.linearVelocity)));
+
             if (Vector3.Distance(target.Value, rb.transform.position) <= MIN_DETONATION_DIST)
             {
                 // EXPLODE!
-
+                Explode();
             }
         }
 
     }
 
+    private void Explode()
+    {
+        warhead.Detonate();
+    }
 
     public void SetUpMissile(Antenna antenna)
     {
