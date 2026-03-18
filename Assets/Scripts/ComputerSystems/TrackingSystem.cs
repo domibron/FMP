@@ -5,7 +5,8 @@ using UnityEngine;
 public class TrackingData
 {
     public Collider lockedTarget;
-    public Collider[] storedDetectedTargets;
+    public Collider[] storedDetectedRadarTargets;
+    public Collider[] storedDetectedGeneralTargets;
     public bool hasLock;
 }
 
@@ -17,7 +18,11 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     [SerializeField]
     Transform headOfPilot;
 
-    Collider[] detectedEntities;
+    [SerializeField]
+    GeneralSensor generalSensor;
+
+    Collider[] detectedRadarEntities;
+    Collider[] detectedSensorEntities;
 
     Collider lockedTarget = null;
 
@@ -60,9 +65,14 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         // failure to read data, so data is null.
 
         if (string.IsNullOrEmpty(radar.ReadData()))
-            detectedEntities = Array.Empty<Collider>();
+            detectedRadarEntities = Array.Empty<Collider>();
         else
-            detectedEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
+            detectedRadarEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
+
+        if (string.IsNullOrEmpty(generalSensor.ReadData()))
+            detectedSensorEntities = Array.Empty<Collider>();
+        else
+            detectedSensorEntities = JsonUtility.FromJson<GeneralSensorData>(generalSensor.ReadData()).colliders;
     }
 
     public void TryLockTargetNearCenter()
@@ -71,10 +81,10 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         float closestAngle = float.MaxValue;
         Collider closestCol = null;
 
-        if (detectedEntities == null) return;
-        if (detectedEntities.Length <= 0) return;
+        if (detectedRadarEntities == null) return;
+        if (detectedRadarEntities.Length <= 0) return;
 
-        foreach (Collider collider in detectedEntities)
+        foreach (Collider collider in detectedRadarEntities)
         {
             if (collider == null) continue;
             if (collider.tag != Constants.SHIP_TAG) continue;
@@ -116,7 +126,8 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         TrackingData data = new TrackingData()
         {
             lockedTarget = lockedTarget,
-            storedDetectedTargets = detectedEntities,
+            storedDetectedRadarTargets = detectedRadarEntities,
+            storedDetectedGeneralTargets = detectedSensorEntities,
             hasLock = hasLock,
         };
 
