@@ -64,15 +64,21 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     {
         // failure to read data, so data is null.
 
-        if (string.IsNullOrEmpty(radar.ReadData()))
-            detectedRadarEntities = Array.Empty<Collider>();
-        else
-            detectedRadarEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
+        if (radar != null)
+        {
+            if (string.IsNullOrEmpty(radar.ReadData()))
+                detectedRadarEntities = Array.Empty<Collider>();
+            else
+                detectedRadarEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
+        }
 
-        if (string.IsNullOrEmpty(generalSensor.ReadData()))
-            detectedSensorEntities = Array.Empty<Collider>();
-        else
-            detectedSensorEntities = JsonUtility.FromJson<GeneralSensorData>(generalSensor.ReadData()).colliders;
+        if (generalSensor != null) // optional module
+        {
+            if (string.IsNullOrEmpty(generalSensor.ReadData()))
+                detectedSensorEntities = Array.Empty<Collider>();
+            else
+                detectedSensorEntities = JsonUtility.FromJson<GeneralSensorData>(generalSensor.ReadData()).colliders;
+        }
     }
 
     public void TryLockTargetNearCenter()

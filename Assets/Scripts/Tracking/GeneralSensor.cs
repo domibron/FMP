@@ -4,18 +4,15 @@ using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public class RadarData
+public class GeneralSensorData
 {
     public Collider[] colliders;
 }
 
-public class Radar : ComponentBase, IDataReadable
+public class GeneralSensor : ComponentBase, IDataReadable
 {
-    [SerializeField, Header("Radar")]
-    float range = 200f;
-
-    [SerializeField, Range(1, 360)]
-    float maxAngle = 90;
+    [SerializeField]
+    float range = 50f;
 
     [SerializeField]
     LayerMask radarLayerMask = 1 << 6;
@@ -34,32 +31,31 @@ public class Radar : ComponentBase, IDataReadable
     private BoxCollider bCollider;
     private SphereCollider sphCollider;
     
-    
-    override protected void Awake()
+    protected override void Awake()
     {
         base.Awake();
         
         bCollider = GetComponent<BoxCollider>();
-
-        if (!bCollider)
-        {
-            sphCollider = GetComponent<SphereCollider>();
-        }
     }
 
     public string ReadData()
     {
         if (destroyed) return string.Empty; // cant read any data if the radar is destroyed.
 
-        RadarData radarData = new()
+        GeneralSensorData generalSensorData = new()
         {
             colliders = results,
         };
 
-        return JsonUtility.ToJson(radarData);
+        return JsonUtility.ToJson(generalSensorData);
     }
 
-    void Sweep()
+    void FixedUpdate()
+    {
+        Scan();
+    }
+
+    void Scan()
     {
         if (bCollider)
         {
@@ -78,20 +74,16 @@ public class Radar : ComponentBase, IDataReadable
                 return;
             }
         }
-        
+
         List<Collider> foundEntities = Physics.OverlapSphere(transform.position, range, radarLayerMask, QueryTriggerInteraction.Ignore).ToList();
 
-        if (foundEntities == null) results = Array.Empty<Collider>();
+        if (foundEntities.Count <= 0) results = Array.Empty<Collider>();
 
         if (foundEntities.Contains<Collider>(selfRadarHitBox))
         {
             foundEntities.Remove(selfRadarHitBox);
         }
 
-        float halfAngle = maxAngle / 2f;
-        Vector3 pos = transform.position;
-
-        if (foundEntities.Count <= 0) results = Array.Empty<Collider>();
         int count = foundEntities.Count;
         int currentIndex = 0;
 
@@ -102,13 +94,6 @@ public class Radar : ComponentBase, IDataReadable
             Vector3 entityPos = foundEntities[currentIndex].transform.position;
 
 
-            Vector3 direction = entityPos - pos;
-
-            if (Vector3.Angle(transform.forward, direction) > halfAngle)
-            {
-                foundEntities.RemoveAt(currentIndex);
-                continue;
-            }
 
             RaycastHit[] hits = Physics.RaycastAll(transform.position, (entityPos - transform.position).normalized, Vector3.Distance(entityPos, transform.position), validBlockerLayers);
 
@@ -116,10 +101,8 @@ public class Radar : ComponentBase, IDataReadable
             {
                 if (currentIndex >= foundEntities.Count) break;
                 if (!hit.collider) continue;
-                if (hit.collider == foundEntities[currentIndex] || hit.collider == selfRadarHitBox) continue;
-                if (hit.collider.tag == Constants.SHIP_TAG) continue;
-
-                print(hit.collider.transform.name);
+                if (hit.collider == foundEntities[currentIndex] || hit.collider == selfRadarHitBox) continue; // should be impossible to get hit
+                if (hit.collider.CompareTag(Constants.SHIP_TAG)) continue;
 
                 foundEntities.RemoveAt(currentIndex);
                 continue;
@@ -131,10 +114,5 @@ public class Radar : ComponentBase, IDataReadable
         if (foundEntities.Count <= 0) results = Array.Empty<Collider>();
 
         results = foundEntities.ToArray();
-    }
-
-    void FixedUpdate()
-    {
-        Sweep();
     }
 }

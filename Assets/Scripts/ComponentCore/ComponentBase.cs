@@ -5,6 +5,11 @@ public class ComponentBase : MonoBehaviour
     [SerializeField, Header("Component")]
     protected float maxHealth = 100f;
 
+    [SerializeField]
+    protected string compName = "Name";
+
+    public string GetCompName { get { return compName; } }
+
     protected float currentHealth;
 
     protected bool destroyed = false;
