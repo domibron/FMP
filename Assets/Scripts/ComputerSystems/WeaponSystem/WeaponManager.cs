@@ -1,4 +1,11 @@
+using System;
 using UnityEngine;
+
+[Serializable]
+public class WeaponManagerData
+{
+    public WeaponData[] weaponsData;
+}
 
 public class WeaponManager : MonoBehaviour, IDataReadable
 {
@@ -73,6 +80,33 @@ public class WeaponManager : MonoBehaviour, IDataReadable
 
     public string ReadData()
     {
-        return string.Empty;
+
+        WeaponManagerData data = new WeaponManagerData()
+        {
+            weaponsData = new WeaponData[allWeapons.Length],
+        };
+
+        int count = 0;
+        
+        foreach (var weapon in allWeapons)
+        {
+            if (string.IsNullOrEmpty(weapon.ReadData()))
+            {
+                data.weaponsData[count] = new WeaponData()
+                {
+                    WeaponType = WeaponType.Cannon,
+                    WeaponAmmo = -99,
+                    WeaponAmmoMax = -99,
+                };
+                    
+                count++;
+                continue;
+            }
+
+            data.weaponsData[count] = JsonUtility.FromJson<WeaponData>(weapon.ReadData());
+            count++;
+        }
+        
+        return JsonUtility.ToJson(data);
     }
 }

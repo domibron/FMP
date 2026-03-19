@@ -6,8 +6,9 @@ public class InputHandler : MonoBehaviour
     InputAction moveAction;
     InputAction lookAction;
     InputAction fireAction;
-    InputAction LockOnAction;
+    InputAction lockOnAction;
     InputAction switchAction;
+    InputAction counterMAction;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,8 +16,9 @@ public class InputHandler : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move", true);
         lookAction = InputSystem.actions.FindAction("Look", true);
         fireAction = InputSystem.actions.FindAction("Fire", true);
-        LockOnAction = InputSystem.actions.FindAction("Lock", true);
+        lockOnAction = InputSystem.actions.FindAction("Lock", true);
         switchAction = InputSystem.actions.FindAction("Switch", true);
+        counterMAction = InputSystem.actions.FindAction("Countermeasure", true);
 
         // print(moveAction.ReadValue<Vector3>());
     }
@@ -45,11 +47,17 @@ public class InputHandler : MonoBehaviour
 
     public bool GetLockPressed()
     {
-        return LockOnAction.IsPressed();
+        return lockOnAction.IsPressed();
     }
 
     public bool GetSwitchPressed()
     {
         return switchAction.IsPressed();
     }
+    
+    public bool GetCounterMPressed()
+    {
+        return counterMAction.IsPressed();
+    }
+    
 }

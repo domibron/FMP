@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FuelCell
   maxHealth: 100
+  compName: Name
   id: 0
   maxFuel: 100
 --- !u!114 &5885620313519264386
@@ -109,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Warhead
   maxHealth: 100
+  compName: Name
   radius: 5
   damage: 999
   layerMask:
@@ -185,6 +187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Thruster
   maxHealth: 100
+  compName: Name
   rb: {fileID: 6147853048736890682}
   forceDirection: {x: 0, y: 0, z: -1}
   consumptionPerForce: 0.01
@@ -684,12 +687,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Radar
   maxHealth: 100
+  compName: Name
   range: 200
   maxAngle: 90
   radarLayerMask:
     serializedVersion: 2
     m_Bits: 64
   selfRadarHitBox: {fileID: 5147796353329293998}
+  validBlockerLayers:
+    serializedVersion: 2
+    m_Bits: 513
+  countermeasureLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &8180670370391499117
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,7 +730,7 @@ Transform:
   m_GameObject: {fileID: 8180670370391499117}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.78926, y: 3.15467, z: 3.74989}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -795,6 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Missile
   maxHealth: 100
+  compName: Name
   thruster: {fileID: 570804328983682070}
   missileSpeed: 360
   DebugActivate: 0
@@ -814,6 +825,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrackingSystem
   radar: {fileID: 2144124025625916385}
   headOfPilot: {fileID: 5848739746833677911}
+  generalSensor: {fileID: 0}
 --- !u!114 &3582253650520015867
 MonoBehaviour:
   m_ObjectHideFlags: 0

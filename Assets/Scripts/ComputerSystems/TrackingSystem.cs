@@ -28,25 +28,18 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
 
     bool hasLock = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private ComponentBase componentBase;
+
+    private void Awake()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        componentBase = GetComponent<ComponentBase>();
     }
 
     void FixedUpdate()
     {
         UpdateStoredTargets();
 
-        // TryLockTargetNearCenter();
-
-        hasLock = lockedTarget != null;
+        hasLock = lockedTarget;
     }
 
     // void OnGUI()
@@ -64,20 +57,28 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     {
         // failure to read data, so data is null.
 
-        if (radar != null)
+        if (radar)
         {
             if (string.IsNullOrEmpty(radar.ReadData()))
                 detectedRadarEntities = Array.Empty<Collider>();
             else
                 detectedRadarEntities = JsonUtility.FromJson<RadarData>(radar.ReadData()).colliders;
         }
+        else
+        {
+            detectedRadarEntities = Array.Empty<Collider>();
+        }
 
-        if (generalSensor != null) // optional module
+        if (generalSensor) // optional module
         {
             if (string.IsNullOrEmpty(generalSensor.ReadData()))
                 detectedSensorEntities = Array.Empty<Collider>();
             else
                 detectedSensorEntities = JsonUtility.FromJson<GeneralSensorData>(generalSensor.ReadData()).colliders;
+        }
+        else
+        {
+            detectedSensorEntities = Array.Empty<Collider>();
         }
     }
 
@@ -92,10 +93,10 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
 
         foreach (Collider collider in detectedRadarEntities)
         {
-            if (collider == null) continue;
+            if (!collider) continue;
             if (collider.tag != Constants.SHIP_TAG) continue;
 
-            if (closestCol == null)
+            if (!closestCol)
             {
                 closestCol = collider;
                 continue;
@@ -111,7 +112,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
             }
         }
 
-        if (closestCol != null)
+        if (!closestCol)
         {
             LockOntoTarget(closestCol);
         }
@@ -129,6 +130,8 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
 
     public string ReadData()
     {
+        if (componentBase.IsComponentDestroyed()) return string.Empty;
+        
         TrackingData data = new TrackingData()
         {
             lockedTarget = lockedTarget,

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum WeaponType
@@ -6,6 +7,7 @@ public enum WeaponType
     Cannon,
 }
 
+[Serializable]
 public class WeaponData
 {
     public WeaponType WeaponType;

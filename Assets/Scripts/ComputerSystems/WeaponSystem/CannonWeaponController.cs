@@ -31,7 +31,17 @@ public class CannonWeaponController : WeaponBase
         CannonData cannonData = new CannonData();
 
         if (!string.IsNullOrEmpty(cannon.ReadData()))
+        {
             cannonData = JsonUtility.FromJson<CannonData>(cannon.ReadData());
+        }
+        else
+        {
+            cannonData = new CannonData()
+            {
+                CurrentAmmo = -1,
+                MaxAmmo = -1,
+            };
+        }
 
         return JsonUtility.ToJson(new WeaponData()
         {
