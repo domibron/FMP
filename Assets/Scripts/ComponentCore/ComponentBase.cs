@@ -1,5 +1,29 @@
 using UnityEngine;
 
+using UnityEditor;
+[CustomEditor(typeof(ComponentBase), true)]
+public class ComponentBaseDestory : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        ComponentBase cBase = (ComponentBase)target;
+
+        if (GUILayout.Button("Destroy"))
+        {
+            if (Application.isPlaying)
+                cBase.DealDamage(999999);
+        }
+
+        if (GUILayout.Button("Reset"))
+        {
+            if (Application.isPlaying)
+                cBase.ResetComponent();
+        }
+    }
+}
+
 public class ComponentBase : MonoBehaviour
 {
     [SerializeField, Header("Component")]

@@ -28,6 +28,7 @@ public class MissileWeaponController : WeaponBase
     {
         foreach (MissileMount missileMount in missileMounts)
         {
+            if (string.IsNullOrEmpty(missileMount.ReadData())) continue;
             if (JsonUtility.FromJson<MissileMountData>(missileMount.ReadData()).hasMissile)
             {
                 missileMount.Activate();

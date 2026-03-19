@@ -27,6 +27,8 @@ public class MissileMount : ComponentBase, IDataReadable, IActivateable
 
     public void Rearm()
     {
+        if (destroyed) return;
+
         if (missile != null) return; // Dont need to spawn a new missile if we already have one.
 
         GameObject missileGO = Instantiate(missilePrefab, missileMountPoint.position, missileMountPoint.rotation);
@@ -37,6 +39,8 @@ public class MissileMount : ComponentBase, IDataReadable, IActivateable
 
     public void Activate()
     {
+        if (destroyed) return;
+
         if (missile == null) return;
 
         missile.Activate();
