@@ -1,10 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class WeaponManagerData
 {
-    public WeaponData[] weaponsData;
+    public WeaponData[] WeaponsData;
+    //[FormerlySerializedAs("currentSelectedWeapon")]
+    public int CurrentSelectedWeapon;
 }
 
 public class WeaponManager : MonoBehaviour, IDataReadable
@@ -83,7 +86,7 @@ public class WeaponManager : MonoBehaviour, IDataReadable
 
         WeaponManagerData data = new WeaponManagerData()
         {
-            weaponsData = new WeaponData[allWeapons.Length],
+            WeaponsData = new WeaponData[allWeapons.Length],
         };
 
         int count = 0;
@@ -92,7 +95,7 @@ public class WeaponManager : MonoBehaviour, IDataReadable
         {
             if (string.IsNullOrEmpty(weapon.ReadData()))
             {
-                data.weaponsData[count] = new WeaponData()
+                data.WeaponsData[count] = new WeaponData()
                 {
                     WeaponType = WeaponType.Cannon,
                     WeaponAmmo = -99,
@@ -103,9 +106,11 @@ public class WeaponManager : MonoBehaviour, IDataReadable
                 continue;
             }
 
-            data.weaponsData[count] = JsonUtility.FromJson<WeaponData>(weapon.ReadData());
+            data.WeaponsData[count] = JsonUtility.FromJson<WeaponData>(weapon.ReadData());
             count++;
         }
+
+        data.CurrentSelectedWeapon = activeWeaponIndex;
         
         return JsonUtility.ToJson(data);
     }

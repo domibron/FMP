@@ -15454,8 +15454,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Cannon:\n[==================] < 43\n100%\n\nMissiles:\n[--] [M] [--] [M]
-    [M] [--] [--] \n1/6 Missiles\n\nSelected:\n>>CANNON<<"
+  m_text: "Cannon:\n[==================]\n100%\n\nMissiles:\n[ ][M][ ][M][ ][ ] \n1/6
+    Missiles\n\nSelected:\n CANNON   >MISSILE<"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
   m_sharedMaterial: {fileID: 3517826784868692417, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
