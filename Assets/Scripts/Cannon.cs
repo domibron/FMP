@@ -68,8 +68,8 @@ public class Cannon : ComponentBase, IDataReadable
 
     private void FireBullet()
     {
-        // if (currentAmmo <= 0) return; // ! FIX
-        if (currentAmmo <= 0) Rearm();
+        if (currentAmmo <= 0) return;
+        // if (currentAmmo <= 0) Rearm();
 
         currentAmmo--;
 

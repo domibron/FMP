@@ -37,7 +37,7 @@ public class MissileWeaponController : WeaponBase
 
         }
 
-        Rearm(); // ! Remove
+        // Rearm(); // ! Remove
     }
 
     public override void Rearm()

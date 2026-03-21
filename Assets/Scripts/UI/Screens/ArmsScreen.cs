@@ -15,9 +15,6 @@ public class ArmsScreen : MonoBehaviour
     private WeaponType selectedWeapon;
 
 
-
-
-
     private void Update()
     {
         UpdateScreen();
@@ -49,8 +46,8 @@ public class ArmsScreen : MonoBehaviour
 
         float cannonPercent = ((float)cannonData.WeaponAmmo / (float)cannonData.WeaponAmmoMax);
         int cannonPercentAsInt = Mathf.RoundToInt(cannonPercent * 100f);
-        string cannonPercentDis = (cannonPercentAsInt < 100 ? " " : "") + (cannonPercentAsInt < 10 ? " " : "") + cannonPercentAsInt.ToString();
-        string ammoPercentWarn = cannonPercent <= 0.3333f ? "<color=red>>>>LOW AMMO<<<</color>" : "";
+        string cannonPercentDis = (cannonPercentAsInt < 100 ? "" : "") + (cannonPercentAsInt < 10 ? " " : "") + cannonPercentAsInt.ToString();
+        string cannonAmmoPercentWarn = cannonPercent > 0 ? (cannonPercent <= 0.3f ? "<color=red>>>>LOW AMMO<<<</color>" : "") : "<color=red>!>OUT OF AMMO<!</color>";
 
 
 
@@ -62,22 +59,48 @@ public class ArmsScreen : MonoBehaviour
         }
         else
         {
-            cannonDisplay = $"CANNON:\n[{GetFill(18, cannonPercent)}]\n{cannonPercentDis}% {ammoPercentWarn}";
+            cannonDisplay = $"CANNON:\n[{GetFill(18, cannonPercent)}]\n{cannonPercentDis}% {cannonAmmoPercentWarn}";
         }
 
+
+        string missileAmmoWarn = missileData.WeaponAmmo > 0 ? (missileData.WeaponAmmo <= 2 ? "<color=red>>>>LOW AMMO<<<</color>" : "") : "<color=red>!>OUT OF AMMO<!</color>";
 
         string missileDisplay = "";
 
         if (missileData.WeaponAmmo == -1 || missileData.WeaponAmmoMax == -1)
         {
-
+            missileDisplay = $"CANNON:\n<color=red>>>>ERROR<<<\n[CONNECTION LOST]</color>";
         }
         else
         {
-            missileDisplay = $"MISSILES:\n{GetBoxFill(missileData.WeaponAmmoMax, missileData.WeaponAmmo)}";
+            missileDisplay = $"MISSILES:\n{GetBoxFill(missileData.WeaponAmmoMax, missileData.WeaponAmmo)}\n{missileData.WeaponAmmo}/{missileData.WeaponAmmoMax} {missileAmmoWarn}";
         }
 
-        screenText.text = $"{cannonDisplay}\n\n{missileDisplay}";
+        string cannonSelected;
+
+        if (selectedWeapon == WeaponType.Cannon)
+        {
+            cannonSelected = "><b>CANNON</b><";
+        }
+        else
+        {
+            cannonSelected = " <i>CANNON</i> ";
+        }
+
+        string missileSelected;
+
+        if (selectedWeapon == WeaponType.Missile)
+        {
+            missileSelected = "><b>MISSILE</b><";
+        }
+        else
+        {
+            missileSelected = " <i>MISSILE</i> ";
+        }
+
+        string selectedWeaponDis = $"SELECTED:\n{cannonSelected} {missileSelected}";
+
+        screenText.text = $"{cannonDisplay}\n\n{missileDisplay}\n\n{selectedWeaponDis}";
     }
 
     private string GetFill(int maxBars, float currentFill, char fillChar = '=', char spaceChar = ' ')
