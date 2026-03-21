@@ -1,5 +1,6 @@
 using UnityEngine;
 
+#if UNITY_EDITOR
 using UnityEditor;
 [CustomEditor(typeof(ComponentBase), true)]
 public class ComponentBaseDestory : Editor
@@ -23,6 +24,7 @@ public class ComponentBaseDestory : Editor
         }
     }
 }
+#endif
 
 public class ComponentBase : MonoBehaviour
 {
