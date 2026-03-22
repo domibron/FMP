@@ -2130,7 +2130,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -4121,7 +4121,19 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: DAMAGE INFO
+  m_text: 'SYS INFO:
+
+    FRTHRUSTER: <color=green>100%</color>
+
+    COMPUTER: <color=red>10%</color>
+
+    COMPNAME:
+    <color=orange>50%</color>
+
+    COMPNAME: <color=yellow>90%</color>
+
+    COMPNAME:
+    <color=#990000>0%</color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
   m_sharedMaterial: {fileID: 3517826784868692417, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
@@ -4167,7 +4179,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 5
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -4754,7 +4766,26 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: TRACKING INFO
+  m_text: '>>>NO CONNECTION<<<
+
+    NO LOCKED TARGET
+
+
+    0 SHIPS DETECTED
+
+    0
+    MISSILES DETECTED
+
+
+    <b>[NO LOCK]</b>
+
+
+    <b>[LOCKED]</b>
+
+    TARGET: SHIP
+
+    SPEED:
+    129m/s'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
   m_sharedMaterial: {fileID: 3517826784868692417, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
@@ -9934,7 +9965,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WARN INFO
+  m_text: 'WARNIGS:
+
+    - MAIN THRUSTER FAILURE
+
+    - !!ENEMY LOCK!!
+
+    - COMPONENT
+    FAILED
+
+    - !!LOW AMMO!!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
   m_sharedMaterial: {fileID: 3517826784868692417, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
@@ -9978,7 +10018,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 0
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -10071,7 +10111,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: FLIGHT INFO
+  m_text: "FUEL:\n[==================]\n100%\n3/3 TANKS\n\nSPEED:\n 102m/s"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
   m_sharedMaterial: {fileID: 3517826784868692417, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
