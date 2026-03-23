@@ -1,10 +1,20 @@
+using System;
 using UnityEngine;
 
+[Serializable]
 public struct FuelCellData
 {
-    public int id;
-    public float maxAmount;
-    public float amount;
+    public int ID;
+    public float MaxAmount;
+    public float Amount;
+
+    public float NormalizedAmount
+    {
+        get
+        {
+            return Amount / MaxAmount;
+        }
+    }
 }
 
 public class FuelCell : ComponentBase, IConsumable, IDataReadable
@@ -35,13 +45,20 @@ public class FuelCell : ComponentBase, IConsumable, IDataReadable
         return true;
     }
 
+    protected override void DestroyComponent()
+    {
+        base.DestroyComponent();
+
+        currentFuel = 0;
+    }
+
     public string ReadData()
     {
         return JsonUtility.ToJson(new FuelCellData
         {
-            id = id,
-            maxAmount = maxFuel,
-            amount = currentFuel,
+            ID = id,
+            MaxAmount = maxFuel,
+            Amount = currentFuel,
         });
     }
 }

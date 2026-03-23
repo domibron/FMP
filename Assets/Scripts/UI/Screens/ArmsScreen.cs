@@ -14,6 +14,7 @@ public class ArmsScreen : MonoBehaviour
     private WeaponData missileData;
     private WeaponType selectedWeapon;
 
+    public const int FILL_BAR_AMOUNT = 18;
 
     private void Update()
     {
@@ -59,7 +60,7 @@ public class ArmsScreen : MonoBehaviour
         }
         else
         {
-            cannonDisplay = $"CANNON:\n[{GetFill(18, cannonPercent)}]\n{cannonPercentDis}% {cannonAmmoPercentWarn}";
+            cannonDisplay = $"CANNON:\n[{GetFill(FILL_BAR_AMOUNT, cannonPercent)}]\n{cannonPercentDis}% {cannonAmmoPercentWarn}";
         }
 
 
@@ -103,7 +104,7 @@ public class ArmsScreen : MonoBehaviour
         screenText.text = $"{cannonDisplay}\n\n{missileDisplay}\n\n{selectedWeaponDis}";
     }
 
-    private string GetFill(int maxBars, float currentFill, char fillChar = '=', char spaceChar = ' ')
+    public static string GetFill(int maxBars, float currentFill, char fillChar = '=', char spaceChar = ' ')
     {
         currentFill = Mathf.Clamp01(currentFill); // make sure no funny bugs happen.
         int barsNeeded = Mathf.RoundToInt(maxBars * currentFill);

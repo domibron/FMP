@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -10,10 +11,15 @@ public class TrackingScreen : MonoBehaviour
     [SerializeField]
     TrackingSystem trackingSystem;
 
-    List<Collider> missiles;
-    List<Collider> ships;
+    List<Collider> missiles = new List<Collider>();
+    List<Collider> ships = new List<Collider>();
 
-    List<Collider> allEntities;
+    List<Collider> allEntities = new List<Collider>();
+
+    void Update()
+    {
+        UpdateTextDisplay();
+    }
 
     private void UpdateTextDisplay()
     {
@@ -25,9 +31,12 @@ public class TrackingScreen : MonoBehaviour
             return;
         }
 
+
+
         TrackingData data = JsonUtility.FromJson<TrackingData>(trackingSystem.ReadData());
 
-        allEntities.AddRange(data.storedDetectedRadarTargets);
+        allEntities.Clear();
+        allEntities.AddRange(data.storedDetectedRadarTargets.ToList());
 
         foreach (var target in data.storedDetectedGeneralTargets)
         {
@@ -36,7 +45,41 @@ public class TrackingScreen : MonoBehaviour
             allEntities.Add(target);
         }
 
-        // for loop here, go through all targets and check if they are missiles.
 
+        ships.Clear();
+        missiles.Clear();
+
+        // for loop here, go through all targets and check if they are missiles.
+        foreach (var target in allEntities)
+        {
+            if (target.gameObject.CompareTag(Constants.SHIP_TAG))
+            {
+                ships.Add(target);
+            }
+            else if (target.gameObject.CompareTag(Constants.MISSILE_TAG))
+            {
+                missiles.Add(target);
+            }
+        }
+
+        displayedText = $"DETECTED TARGETS:\n{ships.Count} SHIPS\n{missiles.Count} MISSILES\n";
+
+        if (!data.hasLock)
+        {
+            displayedText += $"\n<b>[NO LOCK]</b>";
+        }
+        else
+        {
+            float speed = 0;
+
+            if (data.lockedTarget.transform.GetComponentInParent<Rigidbody>())
+            {
+                speed = data.lockedTarget.transform.GetComponentInParent<Rigidbody>().linearVelocity.magnitude;
+            }
+
+            displayedText += $"\n<b>[LOCKED]</b>\nTARGET: {data.lockedTarget.gameObject.tag.ToUpper()}\nSPEED: {speed}m/s";
+        }
+
+        uiText.text = displayedText;
     }
 }

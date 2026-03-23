@@ -1,9 +1,53 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 struct FuelTankData
 {
-    public FuelCellData[] fuelCells;
+    public FuelCellData[] FuelCells;
+
+
+    public float FuelFillNormalized
+    {
+        get
+        {
+            float amount = 0;
+
+            if (GetMaxTanks > 0)
+            {
+                foreach (var cell in FuelCells)
+                {
+                    amount += cell.NormalizedAmount;
+                }
+
+                amount /= GetMaxTanks;
+            }
+
+            return amount;
+        }
+    }
+
+    public int GetRemainingTanks
+    {
+        get
+        {
+            int count = 0;
+
+            foreach (var cell in FuelCells)
+            {
+                if (cell.MaxAmount == -1) continue;
+                count++;
+            }
+
+            return count;
+        }
+    }
+
+    public int GetMaxTanks
+    {
+        get { return FuelCells.Length; }
+    }
 }
 
 public class FuelTank : MonoBehaviour, IConsumable, IDataReadable
@@ -22,7 +66,7 @@ public class FuelTank : MonoBehaviour, IConsumable, IDataReadable
 
         foreach (var fuelCell in fuelCells)
         {
-            if (JsonUtility.FromJson<FuelCellData>(fuelCell.ReadData()).amount > 0)
+            if (JsonUtility.FromJson<FuelCellData>(fuelCell.ReadData()).Amount > 0)
             {
                 availableFuelCells.Add(fuelCell);
             }
@@ -42,16 +86,33 @@ public class FuelTank : MonoBehaviour, IConsumable, IDataReadable
 
     public string ReadData()
     {
-        List<FuelCellData> fuelCellsData = new List<FuelCellData>();
+        FuelTankData fuelTankData = new FuelTankData
+        {
+            FuelCells = new FuelCellData[fuelCells.Length]
+        };
+
+        int count = 0;
 
         foreach (var fuelCell in fuelCells)
         {
-            fuelCellsData.Add(JsonUtility.FromJson<FuelCellData>(fuelCell.ReadData()));
+            fuelTankData.FuelCells[count] = JsonUtility.FromJson<FuelCellData>(fuelCell.ReadData());
+            count++;
         }
 
-        return JsonUtility.ToJson(new FuelTankData
-        {
-            fuelCells = fuelCellsData.ToArray()
-        });
+        return JsonUtility.ToJson(fuelTankData);
+
+        // List<FuelCellData> fuelCellsData = new List<FuelCellData>();
+
+        // foreach (var fuelCell in fuelCells)
+        // {
+        //     fuelCellsData.Add(JsonUtility.FromJson<FuelCellData>(fuelCell.ReadData()));
+        // }
+
+        // fuelTankData.FuelCells = fuelCellsData.ToArray();
+
+        // return JsonUtility.ToJson(new FuelTankData
+        // {
+        //     FuelCells = fuelCellsData.ToArray()
+        // });
     }
 }

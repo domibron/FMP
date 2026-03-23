@@ -34,7 +34,10 @@ public class ComponentBase : MonoBehaviour
     [SerializeField]
     protected string compName = "Name";
 
-    public string GetCompName { get { return compName; } }
+    public string ComponentName { get { return compName; } }
+    public float Health { get { return currentHealth; } }
+    public float HealthNormalized { get { return currentHealth / maxHealth; } }
+    public float MaxHealth { get { return maxHealth; } }
 
     protected float currentHealth;
 
@@ -64,6 +67,7 @@ public class ComponentBase : MonoBehaviour
         if (currentHealth <= 0)
         {
             DestroyComponent();
+            currentHealth = 0;
         }
     }
 

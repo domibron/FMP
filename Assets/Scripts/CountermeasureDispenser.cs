@@ -16,7 +16,7 @@ public class CountermeasureDispenser : ComponentBase, IActivateable, IDataReadab
     int maxCount = 20;
 
     int currentCount = 0;
-    
+
     [SerializeField]
     GameObject smokePrefab;
 
@@ -24,7 +24,7 @@ public class CountermeasureDispenser : ComponentBase, IActivateable, IDataReadab
     float cooldown = 0.2f;
 
     private float currentCooldownTime = 0f;
-    
+
     protected override void Awake()
     {
         base.Awake();
@@ -40,9 +40,9 @@ public class CountermeasureDispenser : ComponentBase, IActivateable, IDataReadab
     private void Dispense()
     {
         if (currentCount <= 0 || currentCooldownTime > 0) return;
-        
+
         currentCount -= 1;
-        
+
         Instantiate(smokePrefab, transform.position, transform.rotation);
 
         currentCooldownTime = cooldown;
@@ -69,7 +69,7 @@ public class CountermeasureDispenser : ComponentBase, IActivateable, IDataReadab
             maxCooldown = cooldown,
             currentCooldownTime = currentCooldownTime,
         };
-        
+
         return JsonUtility.ToJson(data);
     }
 }

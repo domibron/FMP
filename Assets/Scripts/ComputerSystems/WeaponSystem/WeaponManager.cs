@@ -17,7 +17,7 @@ public class WeaponManager : MonoBehaviour, IDataReadable
 
     int activeWeaponIndex;
 
-    InputHandler inputHandler;
+    InputIntermediate inputIntermediate;
 
     bool lastFireInput = false;
 
@@ -27,7 +27,7 @@ public class WeaponManager : MonoBehaviour, IDataReadable
 
     void Start()
     {
-        inputHandler = GetComponent<InputHandler>();
+        inputIntermediate = GetComponent<InputIntermediate>();
     }
 
     void Awake()
@@ -44,23 +44,23 @@ public class WeaponManager : MonoBehaviour, IDataReadable
 
     void Update()
     {
-        if (inputHandler.GetFirePressed() && !waitForRelease)
+        if (inputIntermediate.GetFirePressed() && !waitForRelease)
         {
             FireWeapon();
         }
-        else if (!inputHandler.GetFirePressed())
+        else if (!inputIntermediate.GetFirePressed())
         {
             waitForRelease = false;
         }
 
-        lastFireInput = inputHandler.GetFirePressed();
+        lastFireInput = inputIntermediate.GetFirePressed();
 
-        if (inputHandler.GetSwitchPressed() && !lastSwitchInput)
+        if (inputIntermediate.GetSwitchPressed() && !lastSwitchInput)
         {
             SwitchWeapon();
         }
 
-        lastSwitchInput = inputHandler.GetSwitchPressed();
+        lastSwitchInput = inputIntermediate.GetSwitchPressed();
 
     }
 
@@ -90,7 +90,7 @@ public class WeaponManager : MonoBehaviour, IDataReadable
         };
 
         int count = 0;
-        
+
         foreach (var weapon in allWeapons)
         {
             if (string.IsNullOrEmpty(weapon.ReadData()))
@@ -101,7 +101,7 @@ public class WeaponManager : MonoBehaviour, IDataReadable
                     WeaponAmmo = -99,
                     WeaponAmmoMax = -99,
                 };
-                    
+
                 count++;
                 continue;
             }
@@ -111,7 +111,7 @@ public class WeaponManager : MonoBehaviour, IDataReadable
         }
 
         data.CurrentSelectedWeapon = activeWeaponIndex;
-        
+
         return JsonUtility.ToJson(data);
     }
 }

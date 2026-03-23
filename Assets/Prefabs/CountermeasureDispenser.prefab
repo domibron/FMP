@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CountermeasureDispenser
   maxHealth: 100
-  compName: Name
+  compName: Smoke Dis
   maxCount: 20
   smokePrefab: {fileID: 6521171746904942836, guid: 692b084817180804087e171e03e3de79, type: 3}
   cooldown: 0.2

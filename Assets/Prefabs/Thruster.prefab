@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Thruster
   maxHealth: 100
-  compName: Name
+  compName: Thruster
   rb: {fileID: 0}
   forceDirection: {x: 0, y: 0, z: 1}
   consumptionPerForce: 0.01

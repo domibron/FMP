@@ -3,6 +3,9 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    [SerializeField]
+    InputIntermediate inputIntermediate;
+
     InputAction moveAction;
     InputAction lookAction;
     InputAction fireAction;
@@ -26,38 +29,44 @@ public class InputHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        inputIntermediate.SetMoveVector(moveAction.ReadValue<Vector3>());
+        inputIntermediate.SetLookVector(lookAction.ReadValue<Vector3>());
 
-    }
-
-    public Vector3 GetMoveInputVector()
-    {
-        // print(moveAction.ReadValue<Vector3>());
-        return moveAction.ReadValue<Vector3>();
-    }
-
-    public Vector3 GetLookInputVector()
-    {
-        return lookAction.ReadValue<Vector3>();
+        inputIntermediate.SetFirePressed(fireAction.IsPressed());
+        inputIntermediate.SetLockPressed(lockOnAction.IsPressed());
+        inputIntermediate.SetSwitchPressed(switchAction.IsPressed());
+        inputIntermediate.SetCounterMPressed(counterMAction.IsPressed());
     }
 
-    public bool GetFirePressed()
-    {
-        return fireAction.IsPressed();
-    }
+    // public Vector3 GetMoveInputVector()
+    // {
+    //     // print(moveAction.ReadValue<Vector3>());
+    //     return moveAction.ReadValue<Vector3>();
+    // }
 
-    public bool GetLockPressed()
-    {
-        return lockOnAction.IsPressed();
-    }
+    // public Vector3 GetLookInputVector()
+    // {
+    //     return lookAction.ReadValue<Vector3>();
+    // }
 
-    public bool GetSwitchPressed()
-    {
-        return switchAction.IsPressed();
-    }
-    
-    public bool GetCounterMPressed()
-    {
-        return counterMAction.IsPressed();
-    }
-    
+    // public bool GetFirePressed()
+    // {
+    //     return fireAction.IsPressed();
+    // }
+
+    // public bool GetLockPressed()
+    // {
+    //     return lockOnAction.IsPressed();
+    // }
+
+    // public bool GetSwitchPressed()
+    // {
+    //     return switchAction.IsPressed();
+    // }
+
+    // public bool GetCounterMPressed()
+    // {
+    //     return counterMAction.IsPressed();
+    // }
+
 }

@@ -1750,7 +1750,7 @@ GameObject:
   - component: {fileID: 112419807}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2538,7 +2538,7 @@ Transform:
   m_GameObject: {fileID: 213258527}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.75, z: 3.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3196,7 +3196,7 @@ GameObject:
   - component: {fileID: 292563222}
   m_Layer: 0
   m_Name: Sphere (1)
-  m_TagString: Untagged
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4354,7 +4354,7 @@ Transform:
   m_GameObject: {fileID: 399609409}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 3.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4373,7 +4373,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GeneralSensor
   maxHealth: 100
-  compName: Name
+  compName: P Sensor
   range: 50
   radarLayerMask:
     serializedVersion: 2
@@ -4493,7 +4493,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6, y: 0, z: -1.25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 1, z: 7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 152556230}
@@ -4511,7 +4511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FuelCell
   maxHealth: 100
-  compName: Name
+  compName: R F Tank
   id: 2
   maxFuel: 100
 --- !u!65 &405199541
@@ -4542,7 +4542,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405199538}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5594,6 +5594,7 @@ GameObject:
   - component: {fileID: 532976371}
   - component: {fileID: 532976370}
   - component: {fileID: 532976369}
+  - component: {fileID: 532976372}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5684,6 +5685,74 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &532976372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532976367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 558932730d1ca1b44a054423f13473c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthScreen
+  uiText: {fileID: 385920720}
+  allComps:
+  - ComponentBases:
+    - {fileID: 1397810208}
+    NameIfMany: 
+  - ComponentBases:
+    - {fileID: 2145437745}
+    - {fileID: 518283527}
+    - {fileID: 1622839781}
+    - {fileID: 2002330282}
+    - {fileID: 133887080}
+    - {fileID: 1899584114}
+    - {fileID: 65568972}
+    - {fileID: 104193441}
+    - {fileID: 1876675412}
+    - {fileID: 565389107}
+    - {fileID: 427852791}
+    - {fileID: 1560107208}
+    - {fileID: 1907291783}
+    - {fileID: 483544254}
+    - {fileID: 1457108678}
+    - {fileID: 895572345}
+    NameIfMany: Thrusters
+  - ComponentBases:
+    - {fileID: 1118045968}
+    - {fileID: 405199540}
+    - {fileID: 1665658710}
+    NameIfMany: Fuel Cells
+  - ComponentBases:
+    - {fileID: 1846646990}
+    NameIfMany: 
+  - ComponentBases:
+    - {fileID: 399609411}
+    NameIfMany: 
+  - ComponentBases:
+    - {fileID: 779351847}
+    NameIfMany: 
+  - ComponentBases:
+    - {fileID: 552617736}
+    - {fileID: 1049174183}
+    - {fileID: 1254027397}
+    - {fileID: 1358857326}
+    - {fileID: 1345700554}
+    - {fileID: 2010145396}
+    NameIfMany: Missile Array
+  - ComponentBases:
+    - {fileID: 1345838553}
+    NameIfMany: 
+  - ComponentBases:
+    - {fileID: 8206181655929978634}
+    - {fileID: 1623707918}
+    - {fileID: 1526630702}
+    - {fileID: 296604118}
+    - {fileID: 1454937311}
+    - {fileID: 23692441}
+    NameIfMany: CM Dispensers
 --- !u!1 &539014102
 GameObject:
   m_ObjectHideFlags: 0
@@ -10111,7 +10180,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "FUEL:\n[==================]\n100%\n3/3 TANKS\n\nSPEED:\n 102m/s"
+  m_text: "FUEL:\n[==================]\n 100%\n 3/3 TANKS\n\nSPEED:\n 102m/s\n\nCOUNTER
+    MEASURES:\n 20/20"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
   m_sharedMaterial: {fileID: 3517826784868692417, guid: f4d7a3364f63717469c1cf4b8cd6e10b, type: 2}
@@ -12746,7 +12816,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Cannon
   maxHealth: 100
-  compName: Name
+  compName: Cannon
   bulletProjectilePrefab: {fileID: 1669434256044278200, guid: 317cda7b8e69e8d44ab8b7965d3f584d, type: 3}
   bulletSpawnPoint: {fileID: 442576340}
   fireRate: 65
@@ -14851,7 +14921,7 @@ Transform:
   m_GameObject: {fileID: 1080653889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00047588348}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15118,7 +15188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FuelCell
   maxHealth: 100
-  compName: Name
+  compName: L F Tank
   id: 0
   maxFuel: 100
 --- !u!65 &1118045969
@@ -15149,7 +15219,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118045967}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -15208,8 +15278,8 @@ Transform:
   m_GameObject: {fileID: 1118045967}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6, y: 0, z: -1.25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -6, y: 0, z: -1.0000005}
+  m_LocalScale: {x: 5, y: 1, z: 7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 152556230}
@@ -16908,7 +16978,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Antenna
   maxHealth: 100
-  compName: Name
+  compName: Antenna
   maxRange: 500
   trackingSystem: {fileID: 1397810211}
 --- !u!65 &1345838554
@@ -17114,13 +17184,14 @@ GameObject:
   - component: {fileID: 1397810205}
   - component: {fileID: 1397810208}
   - component: {fileID: 1397810210}
+  - component: {fileID: 1397810217}
   - component: {fileID: 1397810209}
   - component: {fileID: 1397810211}
   - component: {fileID: 1397810213}
   - component: {fileID: 1397810212}
   - component: {fileID: 1397810214}
-  - component: {fileID: 1397810215}
   - component: {fileID: 1397810216}
+  - component: {fileID: 1397810218}
   m_Layer: 0
   m_Name: Computer
   m_TagString: Ship
@@ -17234,7 +17305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComponentBase
   maxHealth: 100
-  compName: Name
+  compName: Computer
 --- !u!114 &1397810209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17311,6 +17382,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4709991c1f2b0bd4ba2b3b1f8630804a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputHandler
+  inputIntermediate: {fileID: 1397810218}
 --- !u!114 &1397810211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17373,18 +17445,6 @@ MonoBehaviour:
   - {fileID: 1358857326}
   - {fileID: 1345700554}
   - {fileID: 2010145396}
---- !u!114 &1397810215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397810203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5db2412cd69e6846854f5587aca68c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpamLockAttempt
 --- !u!114 &1397810216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17404,6 +17464,31 @@ MonoBehaviour:
   - {fileID: 296604118}
   - {fileID: 1454937311}
   - {fileID: 23692441}
+--- !u!114 &1397810217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397810203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9758e536c5e96c74db9f4671e37e8dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputPasser
+  trackingSystem: {fileID: 1397810211}
+--- !u!114 &1397810218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397810203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d938eeacf4f07b64cb67f65273fa2f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputIntermediate
 --- !u!1001 &1428285378
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19430,8 +19515,8 @@ Transform:
   m_GameObject: {fileID: 1665658708}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 7, y: 1.95, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 152556230}
@@ -19449,7 +19534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FuelCell
   maxHealth: 100
-  compName: Name
+  compName: C F Tank
   id: 1
   maxFuel: 100
 --- !u!65 &1665658711
@@ -19480,7 +19565,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1665658708}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -20530,6 +20615,7 @@ GameObject:
   - component: {fileID: 1845956575}
   - component: {fileID: 1845956574}
   - component: {fileID: 1845956573}
+  - component: {fileID: 1845956576}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -20620,6 +20706,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1845956576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845956570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cee5da5a1ff0b7242b2f32ed8352e874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrackingScreen
+  uiText: {fileID: 417904646}
+  trackingSystem: {fileID: 1397810211}
 --- !u!1 &1846646985
 GameObject:
   m_ObjectHideFlags: 0
@@ -20650,8 +20750,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 8}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 773623004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20683,7 +20783,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1846646985}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -20746,7 +20846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Radar
   maxHealth: 100
-  compName: Name
+  compName: Radar
   range: 200
   maxAngle: 90
   radarLayerMask:
@@ -22428,6 +22528,7 @@ GameObject:
   - component: {fileID: 2133410336}
   - component: {fileID: 2133410335}
   - component: {fileID: 2133410334}
+  - component: {fileID: 2133410337}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -22518,6 +22619,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &2133410337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133410332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1610461d48b30841b4c065ef99d3f35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlightInfoScreen
+  fuelTank: {fileID: 213258532}
+  rb: {fileID: 773623010}
+  countermeasureController: {fileID: 1397810216}
+  uiText: {fileID: 719624316}
 --- !u!4 &2145437744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1484390805473318750, guid: 7a66b3def2671a04cbdd3af65e756a5a, type: 3}

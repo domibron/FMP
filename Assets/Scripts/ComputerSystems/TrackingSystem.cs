@@ -94,7 +94,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         foreach (Collider collider in detectedRadarEntities)
         {
             if (!collider) continue;
-            if (collider.tag != Constants.SHIP_TAG) continue;
+            if (!collider.gameObject.CompareTag(Constants.SHIP_TAG)) continue;
 
             if (!closestCol)
             {
@@ -112,7 +112,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
             }
         }
 
-        if (!closestCol)
+        if (closestCol)
         {
             LockOntoTarget(closestCol);
         }
@@ -131,7 +131,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     public string ReadData()
     {
         if (componentBase.IsComponentDestroyed()) return string.Empty;
-        
+
         TrackingData data = new TrackingData()
         {
             lockedTarget = lockedTarget,

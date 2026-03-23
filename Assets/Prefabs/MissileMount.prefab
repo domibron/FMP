@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissileMount
   maxHealth: 100
-  compName: Name
+  compName: M Mount
   missilePrefab: {fileID: 8180670370391499117, guid: 2df4eda926a812046a844623480e246d, type: 3}
   missileMountPoint: {fileID: 7035702696541838485}
   antenna: {fileID: 0}

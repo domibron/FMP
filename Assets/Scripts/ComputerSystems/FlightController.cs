@@ -77,7 +77,7 @@ public class FlightController : MonoBehaviour
     [SerializeField]
     Thruster[] rollClockwiseThrusters;
 
-    private InputHandler inputHandler;
+    private InputIntermediate inputIntermediate;
 
     float forceAmount = 100;
 
@@ -88,7 +88,7 @@ public class FlightController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        inputHandler = GetComponent<InputHandler>();
+        inputIntermediate = GetComponent<InputIntermediate>();
         rb = GetComponentInParent<Rigidbody>();
     }
 
@@ -96,8 +96,8 @@ public class FlightController : MonoBehaviour
     void Update()
     {
         ResetAllThrusters();
-        Vector3 currentInputVector = inputHandler.GetMoveInputVector();
-        Vector3 currentLookVector = inputHandler.GetLookInputVector();
+        Vector3 currentInputVector = inputIntermediate.GetMoveVector();
+        Vector3 currentLookVector = inputIntermediate.GetLookVector();
 
         LinearThrust(currentInputVector);
         RotationalThrust(currentLookVector);
