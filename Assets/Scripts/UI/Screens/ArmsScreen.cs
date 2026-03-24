@@ -10,6 +10,9 @@ public class ArmsScreen : MonoBehaviour
     [SerializeField]
     TMP_Text screenText;
 
+    [SerializeField]
+    WarningScreen warningScreen;
+
     private WeaponData cannonData;
     private WeaponData missileData;
     private WeaponType selectedWeapon;
@@ -48,9 +51,21 @@ public class ArmsScreen : MonoBehaviour
         float cannonPercent = ((float)cannonData.WeaponAmmo / (float)cannonData.WeaponAmmoMax);
         int cannonPercentAsInt = Mathf.RoundToInt(cannonPercent * 100f);
         string cannonPercentDis = (cannonPercentAsInt < 100 ? "" : "") + (cannonPercentAsInt < 10 ? " " : "") + cannonPercentAsInt.ToString();
+
+        // TODO: optimise all dis mess.
         string cannonAmmoPercentWarn = cannonPercent > 0 ? (cannonPercent <= 0.3f ? "<color=red>>>>LOW AMMO<<<</color>" : "") : "<color=red>!>OUT OF AMMO<!</color>";
-
-
+        if (cannonPercent > 0 && cannonPercent <= 0.3f)
+        {
+            warningScreen.FlashWarning(WarningScreen.CANNON_LOW_KEY);
+        }
+        else if (cannonPercent <= 0)
+        {
+            warningScreen.ShowWarning(WarningScreen.CANNON_LOW_KEY);
+        }
+        else
+        {
+            warningScreen.HideWarning(WarningScreen.CANNON_LOW_KEY);
+        }
 
         string cannonDisplay = "";
 
@@ -65,6 +80,18 @@ public class ArmsScreen : MonoBehaviour
 
 
         string missileAmmoWarn = missileData.WeaponAmmo > 0 ? (missileData.WeaponAmmo <= 2 ? "<color=red>>>>LOW AMMO<<<</color>" : "") : "<color=red>!>OUT OF AMMO<!</color>";
+        if (missileData.WeaponAmmo > 0 && missileData.WeaponAmmo <= 2)
+        {
+            warningScreen.FlashWarning(WarningScreen.MISSILE_LOW_KEY);
+        }
+        else if (missileData.WeaponAmmo <= 0)
+        {
+            warningScreen.ShowWarning(WarningScreen.MISSILE_LOW_KEY);
+        }
+        else
+        {
+            warningScreen.HideWarning(WarningScreen.MISSILE_LOW_KEY);
+        }
 
         string missileDisplay = "";
 

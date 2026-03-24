@@ -5,6 +5,7 @@ using UnityEngine;
 public class TrackingData
 {
     public Collider lockedTarget;
+    public Collider lockableTarget;
     public Collider[] storedDetectedRadarTargets;
     public Collider[] storedDetectedGeneralTargets;
     public bool hasLock;
@@ -82,19 +83,62 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         }
     }
 
-    public void TryLockTargetNearCenter()
+    public void TryLockTargetNearCenter(bool ignoreLockedTarget = true)
+    {
+        // // * chache if using out of order since the list can update whilst iterating.
+        // float closestAngle = float.MaxValue;
+        // Collider closestCol = null;
+
+        // if (detectedRadarEntities == null) return;
+        // if (detectedRadarEntities.Length <= 0) return;
+
+        // foreach (Collider collider in detectedRadarEntities)
+        // {
+        //     if (!collider) continue;
+        //     if (!collider.gameObject.CompareTag(Constants.SHIP_TAG)) continue;
+
+        //     if (!closestCol)
+        //     {
+        //         closestCol = collider;
+        //         continue;
+        //     }
+
+        //     Vector3 directionOfTarget = collider.transform.position - headOfPilot.position;
+        //     float angleDeviation = Vector3.Angle(directionOfTarget, headOfPilot.forward);
+
+        //     if (Vector3.Angle(directionOfTarget, headOfPilot.forward) < closestAngle)
+        //     {
+        //         closestCol = collider;
+        //         closestAngle = angleDeviation;
+        //     }
+        // }
+
+        Collider closestCol = GetNearestNearCamCenter(ignoreLockedTarget);
+
+        if (closestCol)
+        {
+            LockOntoTarget(closestCol);
+        }
+        else
+        {
+            ReleaseLock();
+        }
+    }
+
+    public Collider GetNearestNearCamCenter(bool ignoreLockedTarget = true)
     {
         // * chache if using out of order since the list can update whilst iterating.
         float closestAngle = float.MaxValue;
         Collider closestCol = null;
 
-        if (detectedRadarEntities == null) return;
-        if (detectedRadarEntities.Length <= 0) return;
+        if (detectedRadarEntities == null) return null;
+        if (detectedRadarEntities.Length <= 0) return null;
 
         foreach (Collider collider in detectedRadarEntities)
         {
             if (!collider) continue;
             if (!collider.gameObject.CompareTag(Constants.SHIP_TAG)) continue;
+            if (collider == lockedTarget && ignoreLockedTarget) continue;
 
             if (!closestCol)
             {
@@ -112,10 +156,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
             }
         }
 
-        if (closestCol)
-        {
-            LockOntoTarget(closestCol);
-        }
+        return closestCol;
     }
 
     void LockOntoTarget(Collider col)
@@ -138,6 +179,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
             storedDetectedRadarTargets = detectedRadarEntities,
             storedDetectedGeneralTargets = detectedSensorEntities,
             hasLock = hasLock,
+            lockableTarget = GetNearestNearCamCenter(),
         };
 
         return JsonUtility.ToJson(data);

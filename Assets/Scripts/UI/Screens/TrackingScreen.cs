@@ -11,10 +11,15 @@ public class TrackingScreen : MonoBehaviour
     [SerializeField]
     TrackingSystem trackingSystem;
 
+    [SerializeField]
+    WarningScreen warningScreen;
+
     List<Collider> missiles = new List<Collider>();
     List<Collider> ships = new List<Collider>();
 
     List<Collider> allEntities = new List<Collider>();
+
+    bool lastLock = false;
 
     void Update()
     {
@@ -52,6 +57,8 @@ public class TrackingScreen : MonoBehaviour
         // for loop here, go through all targets and check if they are missiles.
         foreach (var target in allEntities)
         {
+            if (!target) continue; // if null, ignore. or well if non-existing.
+
             if (target.gameObject.CompareTag(Constants.SHIP_TAG))
             {
                 ships.Add(target);
@@ -64,12 +71,36 @@ public class TrackingScreen : MonoBehaviour
 
         displayedText = $"DETECTED TARGETS:\n{ships.Count} SHIPS\n{missiles.Count} MISSILES\n";
 
-        if (!data.hasLock)
+        if (ships.Count > 0)
         {
-            displayedText += $"\n<b>[NO LOCK]</b>";
+            warningScreen.FlashWarning(WarningScreen.ENEMY_DETECTED_KEY);
         }
         else
         {
+            warningScreen.HideWarning(WarningScreen.ENEMY_DETECTED_KEY);
+        }
+
+        if (!data.hasLock)
+        {
+            displayedText += $"\n<b>[NO LOCK]</b>";
+            if (ships.Count > 0)
+            {
+                warningScreen.FlashWarning(WarningScreen.NO_LOCK_KEY);
+            }
+            else
+            {
+                warningScreen.HideWarning(WarningScreen.NO_LOCK_KEY);
+            }
+
+            if (lastLock)
+            {
+                warningScreen.FlashForTimeWarning(WarningScreen.LOCK_FAILED_KEY, 3f);
+            }
+        }
+        else
+        {
+            warningScreen.HideWarning(WarningScreen.NO_LOCK_KEY);
+
             float speed = 0;
 
             if (data.lockedTarget.transform.GetComponentInParent<Rigidbody>())
@@ -79,6 +110,9 @@ public class TrackingScreen : MonoBehaviour
 
             displayedText += $"\n<b>[LOCKED]</b>\nTARGET: {data.lockedTarget.gameObject.tag.ToUpper()}\nSPEED: {speed}m/s";
         }
+
+        lastLock = data.hasLock;
+
 
         uiText.text = displayedText;
     }

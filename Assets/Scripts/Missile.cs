@@ -54,7 +54,7 @@ public class Missile : ComponentBase, IActivateable
     void Update()
     {
         // acquire target.
-        if (antenna == null)
+        if (!antenna)
         {
             // Try and use self acquire target.
 
@@ -78,7 +78,8 @@ public class Missile : ComponentBase, IActivateable
         }
         else
         {
-            if (string.IsNullOrEmpty(antenna.GetData(rb.transform.position)))
+
+            if (!antenna || string.IsNullOrEmpty(antenna.GetData(rb.transform.position)))
             {
                 // target = null;
             }

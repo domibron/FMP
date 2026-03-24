@@ -28,7 +28,7 @@ public class InputPasser : MonoBehaviour
             lockPressed = true;
             trackingSystem.TryLockTargetNearCenter();
         }
-        else
+        else if (!inputIntermediate.GetLockPressed())
         {
             lockPressed = false;
         }
