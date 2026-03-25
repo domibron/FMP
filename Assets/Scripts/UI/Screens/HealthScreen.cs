@@ -7,7 +7,6 @@ using UnityEngine.UI;
 [Serializable]
 public class HealthScreenCompCollection
 {
-    [FormerlySerializedAs("componentBases")]
     public ComponentBase[] ComponentBases;
 
     public string NameIfMany = "Name";
@@ -50,10 +49,13 @@ public class HealthScreen : MonoBehaviour
     [SerializeField]
     TMP_Text uiText;
 
-
+    [SerializeField]
+    WarningScreen warningScreen;
 
     [SerializeField]
     HealthScreenCompCollection[] allComps;
+
+    float lastAverage = 1f;
 
     void Update()
     {
@@ -77,6 +79,27 @@ public class HealthScreen : MonoBehaviour
         collectiveAvg /= allComps.Length;
 
         displayText += $"<b>OVERALL:</b> {WrapWithColor(collectiveAvg, (collectiveAvg).ToString("P0"))}{modulesText}";
+
+        if (collectiveAvg > 0 && collectiveAvg <= 0.65f)
+        {
+            warningScreen.FlashWarning(WarningScreen.DAMAGE_CRITICAL_KEY);
+        }
+        else if (collectiveAvg <= 0)
+        {
+            warningScreen.ShowWarning(WarningScreen.DAMAGE_CRITICAL_KEY);
+        }
+        else
+        {
+            warningScreen.HideWarning(WarningScreen.DAMAGE_CRITICAL_KEY);
+        }
+
+        if (collectiveAvg < lastAverage)
+        {
+            warningScreen.FlashForTimeWarning(WarningScreen.DAMAGE_TAKEN_KEY, 2);
+        }
+
+        lastAverage = collectiveAvg;
+
 
         uiText.text = displayText;
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -22,6 +23,9 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     [SerializeField]
     GeneralSensor generalSensor;
 
+    [SerializeField]
+    Collider selfRadarHitBox;
+
     Collider[] detectedRadarEntities;
     Collider[] detectedSensorEntities;
 
@@ -40,7 +44,15 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
     {
         UpdateStoredTargets();
 
+        // expensive, I am aware.
+        if (!detectedRadarEntities.Contains(lockedTarget) && !detectedSensorEntities.Contains(lockedTarget)) lockedTarget = null;
+
         hasLock = lockedTarget;
+
+        if (hasLock)
+        {
+            lockedTarget.GetComponent<RadarPing>()?.PingSystem(selfRadarHitBox);
+        }
     }
 
     // void OnGUI()

@@ -31,6 +31,12 @@ public class PauseMenu : MonoBehaviour
             Pause();
         }
     }
+
+    public void SelfDestruct()
+    {
+        GameManager.Instance.SelfDestruct(Team.TeamType.TeamA);
+    }
+
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(mainMenuIndex);

@@ -36,6 +36,14 @@ public class FuelCell : ComponentBase, IConsumable, IDataReadable
         currentFuel = maxFuel;
     }
 
+    public override void ResetComponent()
+    {
+        base.ResetComponent();
+
+        currentFuel = maxFuel;
+    }
+
+
     public bool Consume(float amount)
     {
         if (currentFuel <= 0) return false;

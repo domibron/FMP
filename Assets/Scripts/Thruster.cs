@@ -44,6 +44,8 @@ public class Thruster : ComponentBase
 
     private void TickThruster()
     {
+        if (destroyed) return;
+
         if (fuelTank != null)
         {
             if (fuelTank.Consume(targetForce * Time.deltaTime * consumptionPerForce))
@@ -59,6 +61,8 @@ public class Thruster : ComponentBase
 
     public void PulseThruster(float force)
     {
+        if (destroyed) return;
+
         if (fuelTank != null)
         {
             if (fuelTank.Consume(force * consumptionPerForce))

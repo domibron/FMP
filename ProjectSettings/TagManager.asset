@@ -7,6 +7,8 @@ TagManager:
   - Missile
   - Bullet
   - Ship
+  - Turret
+  - Hangar
   layers:
   - Default
   - TransparentFX

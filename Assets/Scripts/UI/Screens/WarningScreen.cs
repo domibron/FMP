@@ -18,6 +18,14 @@ public class WarningScreen : MonoBehaviour
     [SerializeField]
     WarnIndicator[] warnIndicators;
 
+    [SerializeField]
+    RadarPing radarPing;
+
+    void Awake()
+    {
+        radarPing.OnPinged += OnEnemyLockedUs;
+    }
+
     public void ShowWarning(string key)
     {
         int index = GetWarnIndicatorIndexByKey(key);
@@ -72,5 +80,13 @@ public class WarningScreen : MonoBehaviour
         }
 
         return -1;
+    }
+
+    public void OnEnemyLockedUs(Collider collider)
+    {
+        if (collider.gameObject.CompareTag(Constants.SHIP_TAG))
+            FlashForTimeWarning(ENEMY_LOCK_KEY, 1f);
+        else if (collider.gameObject.CompareTag(Constants.MISSILE_TAG))
+            FlashForTimeWarning(MISSILE_LOCK_KEY, 1f);
     }
 }

@@ -102,13 +102,25 @@ public class TrackingScreen : MonoBehaviour
             warningScreen.HideWarning(WarningScreen.NO_LOCK_KEY);
 
             float speed = 0;
+            string objectTag = "NO TAG";
 
-            if (data.lockedTarget.transform.GetComponentInParent<Rigidbody>())
+
+            if (data.lockedTarget == null)
             {
-                speed = data.lockedTarget.transform.GetComponentInParent<Rigidbody>().linearVelocity.magnitude;
+                Debug.Log("Target locked is null", gameObject);
+            }
+            else
+            {
+                if (data.lockedTarget.transform.GetComponentInParent<Rigidbody>() != null)
+                {
+                    speed = data.lockedTarget.transform.GetComponentInParent<Rigidbody>().linearVelocity.magnitude;
+                }
+
+                objectTag = data.lockedTarget.gameObject.tag.ToUpper();
             }
 
-            displayedText += $"\n<b>[LOCKED]</b>\nTARGET: {data.lockedTarget.gameObject.tag.ToUpper()}\nSPEED: {speed}m/s";
+
+            displayedText += $"\n<b>[LOCKED]</b>\nTARGET: {objectTag}\nSPEED: {speed}m/s";
         }
 
         lastLock = data.hasLock;

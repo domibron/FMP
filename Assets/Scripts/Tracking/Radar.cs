@@ -30,15 +30,22 @@ public class Radar : ComponentBase, IDataReadable
 
     [SerializeField]
     LayerMask countermeasureLayer = (1 << 9);
-    
+
+    [SerializeField]
+    bool startActive = true;
+
+    bool isActive = false;
+
     private BoxCollider bCollider;
     private SphereCollider sphCollider;
-    
-    
+
+
     override protected void Awake()
     {
+        isActive = startActive;
+
         base.Awake();
-        
+
         bCollider = GetComponent<BoxCollider>();
 
         if (!bCollider)
@@ -47,9 +54,16 @@ public class Radar : ComponentBase, IDataReadable
         }
     }
 
+    void Update()
+    {
+
+        selfRadarHitBox.gameObject.SetActive(isActive);
+
+    }
+
     public string ReadData()
     {
-        if (destroyed) return string.Empty; // cant read any data if the radar is destroyed.
+        if (destroyed || !isActive) return string.Empty; // cant read any data if the radar is destroyed.
 
         RadarData radarData = new()
         {
@@ -78,7 +92,7 @@ public class Radar : ComponentBase, IDataReadable
                 return;
             }
         }
-        
+
         List<Collider> foundEntities = Physics.OverlapSphere(transform.position, range, radarLayerMask, QueryTriggerInteraction.Ignore).ToList();
 
         if (foundEntities == null) results = Array.Empty<Collider>();
@@ -112,6 +126,8 @@ public class Radar : ComponentBase, IDataReadable
 
             RaycastHit[] hits = Physics.RaycastAll(transform.position, (entityPos - transform.position).normalized, Vector3.Distance(entityPos, transform.position), validBlockerLayers);
 
+            bool isBlocked = false;
+
             foreach (var hit in hits)
             {
                 if (currentIndex >= foundEntities.Count) break;
@@ -121,6 +137,13 @@ public class Radar : ComponentBase, IDataReadable
 
                 print(hit.collider.transform.name);
 
+                // foundEntities.RemoveAt(currentIndex);
+                isBlocked = true;
+                // continue;
+            }
+
+            if (isBlocked)
+            {
                 foundEntities.RemoveAt(currentIndex);
                 continue;
             }
@@ -136,5 +159,15 @@ public class Radar : ComponentBase, IDataReadable
     void FixedUpdate()
     {
         Sweep();
+    }
+
+    public void Activate()
+    {
+        isActive = true;
+    }
+
+    public void SetActive(bool active)
+    {
+        isActive = active;
     }
 }

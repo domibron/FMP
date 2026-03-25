@@ -36,8 +36,35 @@ public class HUD : MonoBehaviour
     Collider lockedTarget;
     Collider lockableTarget;
 
+    [SerializeField]
+    Transform cannonTar;
+
+    Vector3 magicCannonPoint;
+
+    void Start()
+    {
+        magicCannonPoint = (HudCamera.transform.position + (HudCamera.transform.up * -2f)) + (HudCamera.transform.forward * 100f);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (HudCamera == null) return;
+        Gizmos.DrawSphere(magicCannonPoint, 5f);
+        Gizmos.DrawLine(HudCamera.transform.position, magicCannonPoint);
+    }
+
     void FixedUpdate()
     {
+        Vector3 moveAmount = ((HudCamera.transform.position + (HudCamera.transform.up * -2f)) + (HudCamera.transform.forward * 100f)) - magicCannonPoint;
+
+        moveAmount *= 100f / Cannon.BULLET_SPEED;
+
+        magicCannonPoint += moveAmount;
+
+
+        cannonTar.position = HudCamera.WorldToScreenPoint(magicCannonPoint);
+
+
         UpdateLockables();
         UpdateMarkers();
     }
@@ -99,6 +126,15 @@ public class HUD : MonoBehaviour
 
             markers[marker].transform.position = pos;
 
+            if (pos.z < 0)
+            {
+                markers[marker].SetActive(false);
+            }
+            else
+            {
+                markers[marker].SetActive(true);
+            }
+
             Image image = markers[marker].GetComponent<Image>();
 
             if (marker.gameObject.CompareTag(Constants.SHIP_TAG))
@@ -147,6 +183,15 @@ public class HUD : MonoBehaviour
         pos = HudCamera.WorldToScreenPoint(pos);
 
         marker.transform.position = pos;
+
+        if (pos.z < 0)
+        {
+            marker.SetActive(false);
+        }
+        else
+        {
+            marker.SetActive(true);
+        }
 
         // float scale = Mathf.Atan(Mathf.Atan(1f / 10f)) * (Vector3.Distance(col.transform.position, HudCamera.transform.position));
         // marker.transform.localScale = new Vector3(scale, scale, scale);

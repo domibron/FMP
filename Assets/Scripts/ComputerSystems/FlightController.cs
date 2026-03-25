@@ -208,17 +208,19 @@ public class FlightController : MonoBehaviour
     void RotationalInertiaDampening(Vector3 inputLookVector, Vector3 currentAngularVelocity)
     {
         // Vector3 velocityInLocal = Quaternion.Inverse(rb.transform.rotation) * currentAngularVelocity;
-        Vector3 velocityInLocal = transform.InverseTransformDirection(currentAngularVelocity);
+        Vector3 velocityInLocal = rb.transform.InverseTransformDirection(currentAngularVelocity);
 
         Vector3 convertedInputToRotationalVector = new Vector3(-inputLookVector.y, inputLookVector.x, -inputLookVector.z);
 
         Vector3 angularVelocity = GetAngularDisplacement(-GetIgnoredAxis(convertedInputToRotationalVector, velocityInLocal.normalized));
 
-        Vector3 finalVelocity = currentAngularVelocity + (angularVelocity * Time.deltaTime);
+        Vector3 finalVelocity = velocityInLocal + (angularVelocity * Time.deltaTime);
 
         // print(angularVelocity + " " + currentAngularVelocity);
 
         // print(currentAngularVelocity);
+
+        // const float MIN_ROT_SPEED = 0.1f;
 
         // return;
         if (IsCloseToZero(inputLookVector.x)) // YAW
@@ -229,6 +231,7 @@ public class FlightController : MonoBehaviour
                 {
                     // overshot
                     // to get the force required, reverse the formula. Get the acceleration, then plug that in to get the force needed.
+                    PulseThrusterGroup(ref yawLeftThrusters, velocityInLocal.y / yawLeftThrusters.Length);
                 }
                 else if (finalVelocity.y > 0)
                 {
@@ -243,6 +246,8 @@ public class FlightController : MonoBehaviour
                 if (finalVelocity.y > 0)
                 {
                     // overshot
+                    PulseThrusterGroup(ref yawRightThrusters, -velocityInLocal.y / yawRightThrusters.Length);
+
                 }
                 else if (finalVelocity.y < 0)
                 {
@@ -251,6 +256,13 @@ public class FlightController : MonoBehaviour
                 // AddThrustToThrusterGroup(ref rightThrusters, forceAmount);
 
             }
+            // else
+            // {
+            //     velocityInLocal.y = 0;
+            //     rb.angularVelocity = rb.transform.TransformDirection(velocityInLocal);
+            // }
+
+
         }
 
         if (IsCloseToZero(inputLookVector.y)) // PITCH
@@ -261,6 +273,7 @@ public class FlightController : MonoBehaviour
                 {
                     // overshot
                     // to get the force required, reverse the formula. Get the acceleration, then plug that in to get the force needed.
+                    PulseThrusterGroup(ref pitchUpThrusters, velocityInLocal.x / pitchUpThrusters.Length);
                 }
                 else if (finalVelocity.x > 0)
                 {
@@ -276,6 +289,8 @@ public class FlightController : MonoBehaviour
                 if (finalVelocity.x > 0)
                 {
                     // overshot
+                    PulseThrusterGroup(ref pitchDownThrusters, -velocityInLocal.y / pitchDownThrusters.Length);
+
                 }
                 else if (finalVelocity.x < 0)
                 {
@@ -294,6 +309,7 @@ public class FlightController : MonoBehaviour
                 {
                     // overshot
                     // to get the force required, reverse the formula. Get the acceleration, then plug that in to get the force needed.
+                    PulseThrusterGroup(ref rollClockwiseThrusters, velocityInLocal.z / rollClockwiseThrusters.Length);
                 }
                 else if (finalVelocity.z > 0)
                 {
@@ -308,6 +324,7 @@ public class FlightController : MonoBehaviour
                 if (finalVelocity.z > 0)
                 {
                     // overshot
+                    PulseThrusterGroup(ref rollCounterClockwiseThrusters, -velocityInLocal.z / rollCounterClockwiseThrusters.Length);
                 }
                 else if (finalVelocity.z < 0)
                 {
@@ -356,6 +373,7 @@ public class FlightController : MonoBehaviour
 
         // print(angularDisplacement);
     }
+
 
     Vector3 GetAngularDisplacement(Vector3 desiredRotationDirections)
     {
@@ -445,6 +463,7 @@ public class FlightController : MonoBehaviour
                 {
                     // overshot
                     // to get the force required, reverse the formula. Get the acceleration, then plug that in to get the force needed.
+                    PulseThrusterGroup(ref leftThrusters, velocityInLocal.x / leftThrusters.Length);
                 }
                 else if (finalVelocity.x > 0)
                 {
@@ -459,6 +478,7 @@ public class FlightController : MonoBehaviour
                 if (finalVelocity.x > 0)
                 {
                     // overshot
+                    PulseThrusterGroup(ref rightThrusters, -velocityInLocal.x / rightThrusters.Length);
                 }
                 else if (finalVelocity.x < 0)
                 {
@@ -477,6 +497,8 @@ public class FlightController : MonoBehaviour
                 {
                     // overshot
                     // to get the force required, reverse the formula. Get the acceleration, then plug that in to get the force needed.
+                    PulseThrusterGroup(ref downThrusters, velocityInLocal.y / downThrusters.Length);
+
                 }
                 else if (finalVelocity.y > 0)
                 {
@@ -492,6 +514,7 @@ public class FlightController : MonoBehaviour
                 if (finalVelocity.y > 0)
                 {
                     // overshot
+                    PulseThrusterGroup(ref upThrusters, -velocityInLocal.y / upThrusters.Length);
                 }
                 else if (finalVelocity.y < 0)
                 {
@@ -510,6 +533,7 @@ public class FlightController : MonoBehaviour
                 {
                     // overshot
                     // to get the force required, reverse the formula. Get the acceleration, then plug that in to get the force needed.
+                    PulseThrusterGroup(ref backwardThrusters, velocityInLocal.z / backwardThrusters.Length);
                 }
                 else if (finalVelocity.z > 0)
                 {
@@ -524,6 +548,8 @@ public class FlightController : MonoBehaviour
                 if (finalVelocity.z > 0)
                 {
                     // overshot
+                    PulseThrusterGroup(ref forwardThrusters, -velocityInLocal.z / forwardThrusters.Length);
+
                 }
                 else if (finalVelocity.z < 0)
                 {

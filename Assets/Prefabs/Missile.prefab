@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4035071631835641855}
   - component: {fileID: 1660828132485443112}
   - component: {fileID: 5885620313519264386}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FuelTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,8 +74,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4513969810033592713}
   - component: {fileID: 1392564805223594351}
-  - component: {fileID: 1285094350679928140}
-  m_Layer: 0
+  - component: {fileID: 8147722642507628105}
+  m_Layer: 8
   m_Name: Warhead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,8 +117,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 257
   particlesPrefab: {fileID: 149215624413374112, guid: b69b6a034c4f0814abf70bcb3072ad96, type: 3}
---- !u!135 &1285094350679928140
-SphereCollider:
+--- !u!136 &8147722642507628105
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -135,9 +135,11 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Radius: 0.1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Height: 1
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.55}
 --- !u!1 &2492161997674481491
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,11 +432,11 @@ GameObject:
   - component: {fileID: 5147796353329293998}
   m_Layer: 6
   m_Name: RadarHittable
-  m_TagString: Untagged
+  m_TagString: Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6511979006526246075
 Transform:
   m_ObjectHideFlags: 0
@@ -574,7 +576,7 @@ GameObject:
   - component: {fileID: 984248449612680996}
   - component: {fileID: 9110153817677710955}
   - component: {fileID: 2144124025625916385}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Radar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -700,6 +702,7 @@ MonoBehaviour:
   countermeasureLayer:
     serializedVersion: 2
     m_Bits: 512
+  startActive: 0
 --- !u!1 &8180670370391499117
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,10 +716,9 @@ GameObject:
   - component: {fileID: 6147853048736890682}
   - component: {fileID: 5106492705388626616}
   - component: {fileID: 970065986207024279}
-  - component: {fileID: 3582253650520015867}
   m_Layer: 8
   m_Name: Missile
-  m_TagString: Untagged
+  m_TagString: Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -761,7 +763,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.2
   m_Height: 2
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
@@ -789,7 +791,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 1
-  m_Interpolate: 2
+  m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!114 &5106492705388626616
@@ -809,8 +811,12 @@ MonoBehaviour:
   thruster: {fileID: 570804328983682070}
   missileSpeed: 360
   DebugActivate: 0
+  minDistanceToArm: 5
   trackingSystem: {fileID: 970065986207024279}
+  radar: {fileID: 2144124025625916385}
   warhead: {fileID: 1392564805223594351}
+  maxAliveTime: 60
+  detonationDistance: 5
 --- !u!114 &970065986207024279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -826,18 +832,7 @@ MonoBehaviour:
   radar: {fileID: 2144124025625916385}
   headOfPilot: {fileID: 5848739746833677911}
   generalSensor: {fileID: 0}
---- !u!114 &3582253650520015867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8180670370391499117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5db2412cd69e6846854f5587aca68c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpamLockAttempt
+  selfRadarHitBox: {fileID: 5147796353329293998}
 --- !u!1001 &116473188137438107
 PrefabInstance:
   m_ObjectHideFlags: 0

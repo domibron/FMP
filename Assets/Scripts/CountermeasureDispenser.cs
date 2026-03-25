@@ -32,6 +32,14 @@ public class CountermeasureDispenser : ComponentBase, IActivateable, IDataReadab
         currentCount = maxCount;
     }
 
+    public override void ResetComponent()
+    {
+        base.ResetComponent();
+
+        currentCount = maxCount;
+    }
+
+
     private void Update()
     {
         if (currentCooldownTime > 0) currentCooldownTime -= Time.deltaTime;
