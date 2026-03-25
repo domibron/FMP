@@ -8,6 +8,14 @@ public class WeaponManagerData
     public WeaponData[] WeaponsData;
     //[FormerlySerializedAs("currentSelectedWeapon")]
     public int CurrentSelectedWeapon;
+
+    public WeaponType GetSelectedWeapon
+    {
+        get
+        {
+            return WeaponsData[CurrentSelectedWeapon].WeaponType;
+        }
+    }
 }
 
 public class WeaponManager : MonoBehaviour, IDataReadable

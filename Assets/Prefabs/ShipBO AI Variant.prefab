@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3882080738264599443}
   m_Layer: 7
-  m_Name: GameObject
+  m_Name: HeadOfAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -383,6 +383,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7219580268866652936, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+      propertyPath: comWorld.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219580268866652936, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+      propertyPath: comWorld.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7219580268866652936, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+      propertyPath: comWorld.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7293107320050756733, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -500,6 +512,50 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 5631927694591097947}
   m_SourcePrefab: {fileID: 100100000, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+--- !u!114 &467381673210466252 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5084512965894728300, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &470619482416480327 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5076772085266195943, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dfa21442021a8645a8ed6cccc07e2e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Radar
+--- !u!114 &473197449090736041 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5071768068860262921, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005632287779019816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61f20cb63f1eb0458fbdbfa05b26db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponManager
+--- !u!114 &864550924315604248 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5407742063639269560, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
 --- !u!114 &891279263486757497 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5525315833338130393, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
@@ -529,8 +585,443 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIController
   inputIntermediate: {fileID: 891279263486757497}
+  maxMoveSpeed: 10
+  maxRotationSpeed: 10
+  flightPath: []
+  rb: {fileID: 1906723388489789790}
+  trackingSystem: {fileID: 3360214134144415260}
+  weaponManager: {fileID: 473197449090736041}
+  radarPing: {fileID: 6755688883197030514}
+  allComps:
+  - {fileID: 4548931958561926581}
+  - {fileID: 5495715802070791950}
+  - {fileID: 2030851380550724359}
+  - {fileID: 5237766669754351241}
+  - {fileID: 6625084974089154139}
+  - {fileID: 3820747343358064759}
+  - {fileID: 6532488073470391277}
+  - {fileID: 8353456293481438632}
+  - {fileID: 2960706657502271695}
+  - {fileID: 2022733284525054940}
+  - {fileID: 3909730117559744491}
+  - {fileID: 9058197458383016534}
+  - {fileID: 864550924315604248}
+  - {fileID: 4786294390899856901}
+  - {fileID: 1109038716152953352}
+  - {fileID: 467381673210466252}
+  - {fileID: 6474371668905049004}
+  - {fileID: 6657479871368774472}
+  - {fileID: 7933132984163450479}
+  - {fileID: 2249695073250784688}
+  - {fileID: 470619482416480327}
+  - {fileID: 1271074270419539487}
+  - {fileID: 3606340218585378901}
+  - {fileID: 8172294500249486877}
+  - {fileID: 4763581142096362148}
+  - {fileID: 6071881004124470591}
+  - {fileID: 8988041568018703896}
+  - {fileID: 3703083555479958167}
+  - {fileID: 1731150422695923651}
+  - {fileID: 7337899814257621869}
+  - {fileID: 8711617587559239914}
+  - {fileID: 8365921020850801582}
+  - {fileID: 8562586711016160794}
+  - {fileID: 6215169081200270737}
+  - {fileID: 7568852987944493744}
+  - {fileID: 2234732184841262821}
+  computer: {fileID: 4548931958561926581}
+--- !u!114 &1109038716152953352 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5735246625501781928, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &1271074270419539487 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5859301784237372351, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2839a2c092ed4ed42b73209d643c6e57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GeneralSensor
 --- !u!4 &1291703293368144280 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5845291818703402040, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
   m_PrefabInstance: {fileID: 4680269968715621792}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1731150422695923651 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6410276615581330019, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36cdfc44c6e92a04cbb08d252a0e8508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissileMount
+--- !u!54 &1906723388489789790 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 6522798222302631166, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2022733284525054940 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6692799338583735932, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &2030851380550724359 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6691399271489425063, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &2234732184841262821 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6913295537292817221, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be73bff3e6f9d4e94ce3e288fd0d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountermeasureDispenser
+--- !u!114 &2249695073250784688 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6902660343243608080, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb1317f43f77f3468c99514452b2a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelCell
+--- !u!114 &2960706657502271695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7630544425264332143, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &3360214134144415260 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7949495795879089084, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005632287779019816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ac59fa6a687af4fb6b588f8328bbe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrackingSystem
+--- !u!114 &3606340218585378901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8286592455454053877, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f63092c4cdd133646813d4d8c5fcb0e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Cannon
+--- !u!114 &3703083555479958167 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8327250694004283191, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36cdfc44c6e92a04cbb08d252a0e8508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissileMount
+--- !u!114 &3820747343358064759 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8499890956897017303, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &3909730117559744491 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8552773772647748171, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &4548931958561926581 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9210605876110968853, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005632287779019816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c00e8bf732fb874aac3f58cebe87a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentBase
+--- !u!114 &4763581142096362148 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 209429967520276228, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36cdfc44c6e92a04cbb08d252a0e8508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissileMount
+--- !u!114 &4786294390899856901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 189148841616798629, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &5237766669754351241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 595567740248365865, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &5495715802070791950 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 916232775090508462, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &6071881004124470591 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1490708137567508639, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36cdfc44c6e92a04cbb08d252a0e8508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissileMount
+--- !u!114 &6215169081200270737 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1635686157500545073, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be73bff3e6f9d4e94ce3e288fd0d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountermeasureDispenser
+--- !u!114 &6474371668905049004 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1813330002553937420, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &6532488073470391277 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1899296349389887053, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &6625084974089154139 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1946310487488957435, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &6657479871368774472 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2060315563808712424, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb1317f43f77f3468c99514452b2a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelCell
+--- !u!114 &6755688883197030514 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2103936950061405650, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 957b797fb76fa1e4ab8109201519818a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RadarPing
+--- !u!114 &7337899814257621869 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2677070834887286477, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb573b96faef0d4aa5e5dbffc035f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Antenna
+--- !u!114 &7568852987944493744 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3024834612085704464, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be73bff3e6f9d4e94ce3e288fd0d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountermeasureDispenser
+--- !u!114 &7933132984163450479 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3380953002273020879, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fb1317f43f77f3468c99514452b2a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelCell
+--- !u!114 &8172294500249486877 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3574303608717894589, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36cdfc44c6e92a04cbb08d252a0e8508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissileMount
+--- !u!114 &8353456293481438632 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3683619592750462984, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster
+--- !u!114 &8365921020850801582 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3812878061589769742, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be73bff3e6f9d4e94ce3e288fd0d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountermeasureDispenser
+--- !u!114 &8562586711016160794 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3902302565498362810, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be73bff3e6f9d4e94ce3e288fd0d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountermeasureDispenser
+--- !u!114 &8711617587559239914 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4041499867191358794, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be73bff3e6f9d4e94ce3e288fd0d50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CountermeasureDispenser
+--- !u!114 &8988041568018703896 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4343819225526830008, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36cdfc44c6e92a04cbb08d252a0e8508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissileMount
+--- !u!114 &9058197458383016534 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4415363981888010230, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0047f70f0e09bfb4e9fa7adaf0e9aaf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Thruster

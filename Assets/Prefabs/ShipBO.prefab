@@ -14885,9 +14885,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &7219580268866652936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15854,8 +15854,13 @@ MonoBehaviour:
   lockSprites:
     normal: {fileID: 21300000, guid: 6e86d02994b11b24383f33937d083d96, type: 3}
     lockable: {fileID: 21300000, guid: 372dd000b530588458368a0d7b5c9bb2, type: 3}
-    locked: {fileID: 21300000, guid: 052b3545932c971469b14b2366fef8e5, type: 3}
+    locked: {fileID: 21300000, guid: fe6522592beb397468e91a7d791ca4bb, type: 3}
     missile: {fileID: 21300000, guid: b50322ac445bef44c92a9f7d707d3d65, type: 3}
+    fHangar: {fileID: 21300000, guid: db3abd1d27974ff44b658f725bdc3ff2, type: 3}
+    fTurret: {fileID: 21300000, guid: 86a9e0dcd56dce44a98d05a5e8174111, type: 3}
+    eHangar: {fileID: 21300000, guid: 69b39096fdbb62344904929520441c92, type: 3}
+    eTurret: {fileID: 21300000, guid: d96a707bb1c445f4ca5fa69114d2e2e2, type: 3}
+  team: {fileID: 2221966215826339712}
   cannonTar: {fileID: 3442205291001243463}
 --- !u!1 &7744464461203230821
 GameObject:

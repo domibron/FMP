@@ -10,6 +10,10 @@ public class LockableSprites
     public Sprite lockable;
     public Sprite locked;
     public Sprite missile;
+    public Sprite fHangar;
+    public Sprite fTurret;
+    public Sprite eHangar;
+    public Sprite eTurret;
 }
 
 public class HUD : MonoBehaviour
@@ -28,6 +32,9 @@ public class HUD : MonoBehaviour
 
     [SerializeField]
     LockableSprites lockSprites;
+
+    [SerializeField]
+    Team team;
 
     Dictionary<Collider, GameObject> markers = new Dictionary<Collider, GameObject>();
 
@@ -124,7 +131,6 @@ public class HUD : MonoBehaviour
             Vector3 pos = marker.transform.position;
             pos = HudCamera.WorldToScreenPoint(pos);
 
-            markers[marker].transform.position = pos;
 
             if (pos.z < 0)
             {
@@ -133,7 +139,11 @@ public class HUD : MonoBehaviour
             else
             {
                 markers[marker].SetActive(true);
+                pos.z = 1;
             }
+
+            markers[marker].transform.position = pos;
+
 
             Image image = markers[marker].GetComponent<Image>();
 
@@ -152,12 +162,48 @@ public class HUD : MonoBehaviour
                     image.sprite = lockSprites.normal;
                 }
             }
-            else
+            else if (marker.gameObject.CompareTag(Constants.MISSILE_TAG))
             {
                 image.sprite = lockSprites.missile;
             }
+            else if (marker.gameObject.CompareTag(Constants.TURRET_TAG))
+            {
+                if (marker.transform.root.GetComponent<Team>() == null)
+                {
+                    image.sprite = lockSprites.eTurret;
+                }
+                else
+                {
+                    if (marker.transform.root.GetComponent<Team>().GetTeamType == team.GetTeamType)
+                    {
+                        image.sprite = lockSprites.fTurret;
+                    }
+                    else
+                    {
+                        image.sprite = lockSprites.eTurret;
+                    }
+                }
+            }
+            else if (marker.gameObject.CompareTag(Constants.HANGAR_TAG))
+            {
+                if (marker.transform.root.GetComponent<Team>() == null)
+                {
+                    image.sprite = lockSprites.eHangar;
+                }
+                else
+                {
+                    if (marker.transform.root.GetComponent<Team>().GetTeamType == team.GetTeamType)
+                    {
+                        image.sprite = lockSprites.fHangar;
+                    }
+                    else
+                    {
+                        image.sprite = lockSprites.eHangar;
+                    }
+                }
+            }
 
-            // float scale = Mathf.Tan(Mathf.Atan(1f / 10f)) * ( Vector3.Distance(marker.transform.position, HudCamera.transform.position) / 10f);
+            // float scale = Mathf.Lerp(2f, 0.01f, Vector3.Distance(marker.transform.position, HudCamera.transform.position) / 2000f);
             // markers[marker].transform.localScale = new Vector3(scale, scale, scale);
         }
 
@@ -182,7 +228,6 @@ public class HUD : MonoBehaviour
         Vector3 pos = marker.transform.position;
         pos = HudCamera.WorldToScreenPoint(pos);
 
-        marker.transform.position = pos;
 
         if (pos.z < 0)
         {
@@ -191,7 +236,11 @@ public class HUD : MonoBehaviour
         else
         {
             marker.SetActive(true);
+            pos.z = 1;
         }
+
+        marker.transform.position = pos;
+
 
         // float scale = Mathf.Atan(Mathf.Atan(1f / 10f)) * (Vector3.Distance(col.transform.position, HudCamera.transform.position));
         // marker.transform.localScale = new Vector3(scale, scale, scale);

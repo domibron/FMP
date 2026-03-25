@@ -18,6 +18,8 @@ public class PauseMenu : MonoBehaviour
         pauseAction = InputSystem.actions.FindAction("Pause", true);
         pauseAction.performed += TogglePaused;
         Resume(); // This may bite me later if I do a tutorial.
+
+
     }
 
     private void TogglePaused(InputAction.CallbackContext context)
@@ -51,11 +53,17 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1;
         toggleObject.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void Pause()
     {
         Time.timeScale = 0;
         toggleObject.SetActive(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
