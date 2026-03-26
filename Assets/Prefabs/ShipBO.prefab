@@ -15994,6 +15994,7 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 5720029237066870444}
   fireRate: 65
   maxAmmo: 999
+  shipRB: {fileID: 6522798222302631166}
 --- !u!1 &7917451616144222913
 GameObject:
   m_ObjectHideFlags: 0

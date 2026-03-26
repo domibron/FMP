@@ -14,6 +14,13 @@ public class Bullet : MonoBehaviour
     Rigidbody rb;
 
     Vector3 lastPos;
+    // bool gotLastPos
+
+    bool canCollide = false;
+
+    float waitTime = 0f;
+
+    float waitDuration = 0.3f;
 
     void Awake()
     {
@@ -23,10 +30,13 @@ public class Bullet : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Physics.Linecast(transform.position, lastPos, layerMask))
-        {
-            print("Shit, something was hit");
-        }
+        // if (Physics.Linecast(transform.position, lastPos, layerMask))
+        // {
+        //     print("Shit, something was hit");
+        // }
+
+        if (waitTime > waitDuration) canCollide = true;
+        else waitTime += Time.fixedDeltaTime;
 
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, rb.linearVelocity.magnitude, layerMask))
         {
@@ -71,6 +81,8 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if (!canCollide) return; // ignore
+
         if (collision.gameObject.CompareTag(Constants.SHIP_TAG) || collision.gameObject.CompareTag(Constants.MISSILE_TAG))
         {
             RaycastHit[] hits = Physics.RaycastAll(collision.GetContact(0).point, GetComponent<Rigidbody>().linearVelocity.normalized, depth, layerMask, QueryTriggerInteraction.Ignore);

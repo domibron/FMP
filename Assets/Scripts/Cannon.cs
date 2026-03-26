@@ -28,6 +28,9 @@ public class Cannon : ComponentBase, IDataReadable
 
     public const float BULLET_SPEED = 800f;
 
+    [SerializeField]
+    Rigidbody shipRB;
+
     void Start()
     {
         Rearm();
@@ -77,6 +80,6 @@ public class Cannon : ComponentBase, IDataReadable
 
         GameObject bullet = Instantiate(bulletProjectilePrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
 
-        bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * BULLET_SPEED, ForceMode.VelocityChange);
+        bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.forward * BULLET_SPEED + shipRB.linearVelocity, ForceMode.VelocityChange);
     }
 }

@@ -13,6 +13,9 @@ public class PauseMenu : MonoBehaviour
 
     InputAction pauseAction;
 
+    [SerializeField]
+    GameObject[] subMenus;
+
     void Start()
     {
         pauseAction = InputSystem.actions.FindAction("Pause", true);
@@ -56,6 +59,9 @@ public class PauseMenu : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        SetMenu(0);
+
     }
 
     public void Pause()
@@ -65,5 +71,24 @@ public class PauseMenu : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        SetMenu(0);
+    }
+
+    public void SetMenu(int index)
+    {
+        if (index >= subMenus.Length || index < 0) index = 0; // fix bad value.
+
+        for (int i = 0; i < subMenus.Length; i++)
+        {
+            if (i == index)
+            {
+                subMenus[i].SetActive(true);
+            }
+            else
+            {
+                subMenus[i].SetActive(false);
+            }
+        }
     }
 }

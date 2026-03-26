@@ -30,7 +30,7 @@ public class InputHandler : MonoBehaviour
     void Update()
     {
         inputIntermediate.SetMoveVector(moveAction.ReadValue<Vector3>());
-        inputIntermediate.SetLookVector(lookAction.ReadValue<Vector3>());
+        inputIntermediate.SetLookVector(lookAction.ReadValue<Vector3>() * PlayerPrefs.GetFloat("Sens", 1f));
 
         inputIntermediate.SetFirePressed(fireAction.IsPressed());
         inputIntermediate.SetLockPressed(lockOnAction.IsPressed());
