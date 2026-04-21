@@ -100,7 +100,7 @@ public class Missile : ComponentBase, IActivateable
         }
         else
         {
-            if (!antenna)
+            if (!antenna || !rb.transform)
             {
                 // target = null;
             }

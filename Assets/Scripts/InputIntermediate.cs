@@ -12,6 +12,7 @@ public class InputIntermediate : MonoBehaviour
 
     public void SetMoveVector(Vector3 vector3)
     {
+        if (Time.timeScale == 0) return;
         moveVector = vector3;
     }
 
@@ -22,6 +23,7 @@ public class InputIntermediate : MonoBehaviour
 
     public void SetLookVector(Vector3 vector3)
     {
+        if (Time.timeScale == 0) return;
         lookVector = vector3;
     }
 
@@ -32,6 +34,7 @@ public class InputIntermediate : MonoBehaviour
 
     public void SetFirePressed(bool b)
     {
+        if (Time.timeScale == 0) return;
         firePressed = b;
     }
 
@@ -42,6 +45,7 @@ public class InputIntermediate : MonoBehaviour
 
     public void SetLockPressed(bool b)
     {
+        if (Time.timeScale == 0) return;
         lockOnPressed = b;
     }
 
@@ -52,6 +56,7 @@ public class InputIntermediate : MonoBehaviour
 
     public void SetSwitchPressed(bool b)
     {
+        if (Time.timeScale == 0) return;
         switchPressed = b;
     }
 
@@ -62,6 +67,7 @@ public class InputIntermediate : MonoBehaviour
 
     public void SetCounterMPressed(bool b)
     {
+        if (Time.timeScale == 0) return;
         counterMPressed = b;
     }
 

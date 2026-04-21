@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -18,6 +20,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     Transform playerSpawn;
 
+    [SerializeField]
+    GameObject shipRagDoll;
+
     private GameObject player;
 
     private int enemyKills;
@@ -25,6 +30,11 @@ public class GameManager : MonoBehaviour
 
     private int enemyDeaths;
     private int playerDeaths;
+
+    private Coroutine playerRespawn;
+    private Coroutine enemyRespawn;
+
+    public event Action<Vector3, Vector3> OnPlayerDeath;
 
     void Awake()
     {
@@ -48,22 +58,45 @@ public class GameManager : MonoBehaviour
     {
         if (teamType == Team.TeamType.TeamA)
         {
+            Rigidbody shipRB = player.GetComponent<Rigidbody>();
+
+            SpawnRagDoll(player);
+
+            OnPlayerDeath?.Invoke(player.transform.position, shipRB.linearVelocity);
+
             Destroy(player);
 
-            CreatePlayer();
-
+            playerRespawn = StartCoroutine(PlayerRespawn());
             playerDeaths++;
             enemyKills++;
         }
         else if (teamType == Team.TeamType.TeamB)
         {
+            Rigidbody shipRB = enemy.GetComponent<Rigidbody>();
+
+            SpawnRagDoll(enemy);
+
             Destroy(enemy);
 
-            CreateEnemy();
+            enemyRespawn = StartCoroutine(EnemyRespawn());
 
             playerKills++;
             enemyDeaths++;
         }
+    }
+
+    private void SpawnRagDoll(GameObject ship)
+    {
+        Rigidbody shipRB = ship.GetComponent<Rigidbody>();
+
+        GameObject ragDoll = Instantiate(shipRagDoll, ship.transform.position, ship.transform.rotation);
+
+        Rigidbody ragRigid = ragDoll.GetComponent<Rigidbody>();
+
+        ragRigid.linearVelocity = shipRB.linearVelocity;
+        ragRigid.angularVelocity = shipRB.angularVelocity;
+
+        Destroy(ragDoll, 5f);
     }
 
     private void CreatePlayer()
@@ -75,5 +108,26 @@ public class GameManager : MonoBehaviour
     private void CreateEnemy()
     {
         enemy = Instantiate(enemyPrefab, enemySpawn.position, enemySpawn.rotation);
+    }
+
+    private IEnumerator PlayerRespawn()
+    {
+        yield return new WaitForSeconds(3f);
+
+        CreatePlayer();
+        playerRespawn = null;
+    }
+
+    private IEnumerator EnemyRespawn()
+    {
+        yield return new WaitForSeconds(3f);
+
+        CreateEnemy();
+        enemyRespawn = null;
+    }
+
+    public bool IsPlayerDead()
+    {
+        return !player;
     }
 }

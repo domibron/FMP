@@ -13,6 +13,8 @@ public class InputHandler : MonoBehaviour
     InputAction switchAction;
     InputAction counterMAction;
 
+    Vector3 lookVector;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,6 +25,10 @@ public class InputHandler : MonoBehaviour
         switchAction = InputSystem.actions.FindAction("Switch", true);
         counterMAction = InputSystem.actions.FindAction("Countermeasure", true);
 
+
+        var rebinds = PlayerPrefs.GetString("rebinds");
+        if (!string.IsNullOrEmpty(rebinds))
+            InputSystem.actions.LoadBindingOverridesFromJson(rebinds);
         // print(moveAction.ReadValue<Vector3>());
     }
 
@@ -30,7 +36,11 @@ public class InputHandler : MonoBehaviour
     void Update()
     {
         inputIntermediate.SetMoveVector(moveAction.ReadValue<Vector3>());
-        inputIntermediate.SetLookVector(lookAction.ReadValue<Vector3>() * PlayerPrefs.GetFloat("Sens", 1f));
+
+        lookVector = lookAction.ReadValue<Vector3>() * PlayerPrefs.GetFloat("Sens", 1f);
+        if (PlayerPrefs.GetInt("InvertY", 0) == 1) lookVector.y = -lookVector.y;
+        if (PlayerPrefs.GetInt("InvertX", 0) == 1) lookVector.x = -lookVector.x;
+        inputIntermediate.SetLookVector(lookVector);
 
         inputIntermediate.SetFirePressed(fireAction.IsPressed());
         inputIntermediate.SetLockPressed(lockOnAction.IsPressed());

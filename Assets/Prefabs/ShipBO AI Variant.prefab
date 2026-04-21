@@ -511,6 +511,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5550424314148452744, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5631927694591097947}
+    - targetCorrespondingSourceObject: {fileID: 5550424314148452744, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 484952262486152732}
   m_SourcePrefab: {fileID: 100100000, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
 --- !u!114 &467381673210466252 stripped
 MonoBehaviour:
@@ -630,6 +633,21 @@ MonoBehaviour:
   - {fileID: 7568852987944493744}
   - {fileID: 2234732184841262821}
   computer: {fileID: 4548931958561926581}
+--- !u!114 &484952262486152732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005632287779019816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4673a46f71e50614d845077135990955, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlowUp
+  fuelTank: {fileID: 8223832648891754717}
+  weaponManager: {fileID: 473197449090736041}
+  teamType: 1
 --- !u!114 &1109038716152953352 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5735246625501781928, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
@@ -959,6 +977,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36cdfc44c6e92a04cbb08d252a0e8508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissileMount
+--- !u!114 &8223832648891754717 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3662346263145926013, guid: 6714d4c0082be974ba870c14729f6395, type: 3}
+  m_PrefabInstance: {fileID: 4680269968715621792}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a385cfbd0f67f58429cd5c9c5fe63a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelTank
 --- !u!114 &8353456293481438632 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3683619592750462984, guid: 6714d4c0082be974ba870c14729f6395, type: 3}

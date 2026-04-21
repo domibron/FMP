@@ -13,6 +13,7 @@ public class WeaponData
     public WeaponType WeaponType;
     public int WeaponAmmo;
     public int WeaponAmmoMax; // ? might not need this.
+    public float WeaponAmmoNormalized { get => (float)WeaponAmmo / WeaponAmmoMax; } // ? might not need this.
 }
 
 public abstract class WeaponBase : MonoBehaviour, IDataReadable

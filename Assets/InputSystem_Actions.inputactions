@@ -104,6 +104,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Dampeners",
+                    "type": "Button",
+                    "id": "ad188523-4571-40bc-b9aa-c9437074fb93",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -621,6 +630,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Countermeasure",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d04598f6-635a-4177-ad27-6b8ce60bc0ce",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Dampeners",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0bbb127e-6650-4e3e-a7a1-73c29cec8715",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Dampeners",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

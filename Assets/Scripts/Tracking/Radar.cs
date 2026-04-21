@@ -135,7 +135,7 @@ public class Radar : ComponentBase, IDataReadable
                 if (hit.collider == foundEntities[currentIndex] || hit.collider == selfRadarHitBox) continue;
                 if (hit.collider.tag == Constants.SHIP_TAG) continue;
 
-                print(hit.collider.transform.name);
+                // print(hit.collider.transform.name);
 
                 // foundEntities.RemoveAt(currentIndex);
                 isBlocked = true;

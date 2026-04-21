@@ -39,6 +39,7 @@ public class Thruster : ComponentBase
 
     public float GetThrusterForce()
     {
+        if (destroyed || (fuelTank && !fuelTank.CanConsume())) return 0;
         return targetForce;
     }
 
@@ -91,5 +92,10 @@ public class Thruster : ComponentBase
     void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + (transform.TransformDirection(forceDirection.normalized) * 3f));
+    }
+
+    public float GetTargetForce()
+    {
+        return targetForce;
     }
 }

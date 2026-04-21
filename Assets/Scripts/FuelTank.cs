@@ -58,6 +58,25 @@ public class FuelTank : MonoBehaviour, IConsumable, IDataReadable
     [SerializeField]
     bool infFuel = false;
 
+    public bool CanConsume()
+    {
+        if (infFuel) return true;
+
+        List<FuelCell> availableFuelCells = new List<FuelCell>();
+
+        foreach (var fuelCell in fuelCells)
+        {
+            if (JsonUtility.FromJson<FuelCellData>(fuelCell.ReadData()).Amount > 0)
+            {
+                availableFuelCells.Add(fuelCell);
+            }
+        }
+
+        if (availableFuelCells.Count <= 0) return false; // cannot consume any fuel form any cells.
+
+        return true;
+    }
+
     public bool Consume(float amount)
     {
         if (infFuel) return true;

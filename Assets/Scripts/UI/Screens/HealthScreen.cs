@@ -53,6 +53,12 @@ public class HealthScreen : MonoBehaviour
     WarningScreen warningScreen;
 
     [SerializeField]
+    AutoSelfDestuct autoSelfDestruct;
+
+    [SerializeField]
+    AudioSource audioSource;
+
+    [SerializeField]
     HealthScreenCompCollection[] allComps;
 
     float lastAverage = 1f;
@@ -80,17 +86,25 @@ public class HealthScreen : MonoBehaviour
 
         displayText += $"<b>OVERALL:</b> {WrapWithColor(collectiveAvg, (collectiveAvg).ToString("P0"))}{modulesText}";
 
-        if (collectiveAvg > 0 && collectiveAvg <= 0.65f)
+        if (collectiveAvg > 0 && collectiveAvg <= 0.70f)
         {
             warningScreen.FlashWarning(WarningScreen.DAMAGE_CRITICAL_KEY);
+            autoSelfDestruct.BeginSelfDestructDamage();
+            if (!audioSource.isPlaying) audioSource.Play();
         }
         else if (collectiveAvg <= 0)
         {
             warningScreen.ShowWarning(WarningScreen.DAMAGE_CRITICAL_KEY);
+            autoSelfDestruct.BeginSelfDestructDamage();
+            if (!audioSource.isPlaying) audioSource.Play();
+
         }
         else
         {
             warningScreen.HideWarning(WarningScreen.DAMAGE_CRITICAL_KEY);
+            autoSelfDestruct.CancelSelfDestruct(AutoSelfDestuct.SelfDestructType.Damage);
+            if (audioSource.isPlaying) audioSource.Stop();
+
         }
 
         if (collectiveAvg < lastAverage)

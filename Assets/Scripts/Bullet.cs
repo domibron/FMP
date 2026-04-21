@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, rb.linearVelocity.magnitude, layerMask))
         {
-            print("Shit, something was hit^2");
+            // print("Shit, something was hit^2");
 
             if (hit.collider.gameObject.CompareTag(Constants.SHIP_TAG) || hit.collider.gameObject.CompareTag(Constants.MISSILE_TAG))
             {

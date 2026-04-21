@@ -40,6 +40,7 @@ public class PauseMenu : MonoBehaviour
     public void SelfDestruct()
     {
         GameManager.Instance.SelfDestruct(Team.TeamType.TeamA);
+        Resume();
     }
 
     public void LoadMainMenu()
