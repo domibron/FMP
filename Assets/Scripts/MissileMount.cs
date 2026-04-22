@@ -18,7 +18,8 @@ public class MissileMount : ComponentBase, IDataReadable, IActivateable
 
     Missile missile;
 
-
+    [SerializeField]
+    AudioSource audioSource;
 
     void Start()
     {
@@ -42,6 +43,9 @@ public class MissileMount : ComponentBase, IDataReadable, IActivateable
         if (destroyed) return;
 
         if (missile == null) return;
+
+        audioSource.Play();
+
 
         missile.Activate();
         missile = null;

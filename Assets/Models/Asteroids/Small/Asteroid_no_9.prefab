@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2679882901008376064}
   - component: {fileID: 839974148907170984}
   - component: {fileID: 2149970316570951495}
+  - component: {fileID: 2321159950600101157}
   m_Layer: 0
   m_Name: Asteroid_no_9
   m_TagString: Untagged
@@ -90,3 +91,24 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!135 &2321159950600101157
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5413432141498976011}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 4.5445065
+  m_Center: {x: 0, y: -0.0000004768373, z: 0}

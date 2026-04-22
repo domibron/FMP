@@ -114,7 +114,14 @@ public class Bullet : MonoBehaviour
                 print(hit.collider.name + " was hit");
             }
 
-
+            if (collision.transform.GetComponent<IBulletHit>() != null)
+            {
+                collision.transform.GetComponent<IBulletHit>().Hit(transform.position);
+            }
+            else if (collision.transform.GetComponentInChildren<IBulletHit>() != null)
+            {
+                collision.transform.GetComponentInChildren<IBulletHit>().Hit(transform.position);
+            }
 
             // if (collision.rigidbody)
             // {

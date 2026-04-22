@@ -31,6 +31,9 @@ public class Cannon : ComponentBase, IDataReadable
     [SerializeField]
     Rigidbody shipRB;
 
+    [SerializeField]
+    AudioSource audioSource;
+
     void Start()
     {
         Rearm();
@@ -40,11 +43,29 @@ public class Cannon : ComponentBase, IDataReadable
     {
         if (currentFireWaitTime > 0) currentFireWaitTime -= Time.deltaTime;
 
-        if (destroyed) return;
+        if (destroyed)
+        {
+            if (audioSource.isPlaying) audioSource.Stop();
+            return;
+        }
 
         if (isFiring)
         {
             FireBullet();
+
+            if (currentAmmo > 0)
+            {
+                if (!audioSource.isPlaying) audioSource.Play();
+            }
+            else
+            {
+                if (audioSource.isPlaying) audioSource.Stop();
+            }
+
+        }
+        else
+        {
+            if (audioSource.isPlaying) audioSource.Stop();
         }
     }
 
