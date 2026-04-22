@@ -5,6 +5,7 @@ using UnityEngine;
 public class AntennaData
 {
     public Vector3 target;
+    public Collider targetCol;
     public bool validTarget;
 }
 
@@ -47,6 +48,7 @@ public class Antenna : ComponentBase
             return JsonUtility.ToJson(new AntennaData()
             {
                 target = Vector3.zero,
+                targetCol = null,
                 validTarget = false,
             });
         }
@@ -54,6 +56,7 @@ public class Antenna : ComponentBase
         return JsonUtility.ToJson(new AntennaData()
         {
             target = data.lockedTarget.transform.position,
+            targetCol = data.lockedTarget,
             validTarget = true,
         });
     }

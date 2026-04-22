@@ -62,6 +62,8 @@ public class Bullet : MonoBehaviour
                     print(h.collider.name + " was hit");
                 }
 
+
+
                 Destroy(gameObject);
             }
             else
@@ -75,6 +77,15 @@ public class Bullet : MonoBehaviour
                 }
 
                 transform.position = hit.point + (rb.linearVelocity.normalized * 2f);
+            }
+
+            if (hit.transform.GetComponent<IBulletHit>() != null)
+            {
+                hit.transform.GetComponent<IBulletHit>().Hit(transform.position);
+            }
+            else if (hit.transform.GetComponentInChildren<IBulletHit>() != null)
+            {
+                hit.transform.GetComponentInChildren<IBulletHit>().Hit(transform.position);
             }
         }
     }

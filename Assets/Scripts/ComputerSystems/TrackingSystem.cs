@@ -95,7 +95,7 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         }
     }
 
-    public void TryLockTargetNearCenter(bool ignoreLockedTarget = true)
+    public void TryLockTargetNearCenter(bool ignoreLockedTarget = true, bool allowUnlock = true)
     {
         // // * chache if using out of order since the list can update whilst iterating.
         // float closestAngle = float.MaxValue;
@@ -126,6 +126,13 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         // }
 
         Collider closestCol = GetNearestNearCamCenter(ignoreLockedTarget);
+
+        if (hasLock && !allowUnlock)
+        {
+            // if (!CanSpotLockedTarget()) ReleaseLock();
+            return;
+        }
+
 
         if (closestCol)
         {
@@ -169,6 +176,22 @@ public class TrackingSystem : MonoBehaviour, IDataReadable
         }
 
         return closestCol;
+    }
+
+    public bool CanSpotLockedTarget()
+    {
+
+        if (detectedRadarEntities == null) return false;
+        if (detectedRadarEntities.Length <= 0) return false;
+
+        foreach (Collider collider in detectedRadarEntities)
+        {
+            if (!collider) continue;
+            if (!collider.gameObject.CompareTag(Constants.SHIP_TAG)) continue;
+            if (collider == lockedTarget) return true;
+        }
+
+        return false;
     }
 
     void LockOntoTarget(Collider col)

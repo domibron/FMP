@@ -21,6 +21,12 @@ public class WarningScreen : MonoBehaviour
     [SerializeField]
     RadarPing radarPing;
 
+    [SerializeField]
+    AudioSource missileLock;
+
+    [SerializeField]
+    AudioSource enemyLock;
+
     void Awake()
     {
         radarPing.OnPinged += OnEnemyLockedUs;
@@ -85,8 +91,14 @@ public class WarningScreen : MonoBehaviour
     public void OnEnemyLockedUs(Collider collider)
     {
         if (collider.gameObject.CompareTag(Constants.SHIP_TAG))
+        {
             FlashForTimeWarning(ENEMY_LOCK_KEY, 1f);
+            if (!enemyLock.isPlaying) enemyLock.Play();
+        }
         else if (collider.gameObject.CompareTag(Constants.MISSILE_TAG))
+        {
             FlashForTimeWarning(MISSILE_LOCK_KEY, 1f);
+            if (!missileLock.isPlaying) missileLock.Play();
+        }
     }
 }

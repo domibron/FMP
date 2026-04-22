@@ -21,6 +21,7 @@ public class Missile : ComponentBase, IActivateable
     bool DebugActivate = false;
 
     Vector3? target = null;
+    Collider targetCol = null;
     Vector3? targetLast = null;
 
     bool armed = false;
@@ -44,6 +45,9 @@ public class Missile : ComponentBase, IActivateable
 
     [SerializeField]
     float detonationDistance = 5f;
+
+    [SerializeField]
+    AudioSource audioSource;
 
     protected override void Awake()
     {
@@ -89,11 +93,12 @@ public class Missile : ComponentBase, IActivateable
 
                 if (data.hasLock)
                 {
+                    targetCol = data.lockedTarget;
                     target = data.lockedTarget.transform.position;
                 }
                 else
                 {
-                    trackingSystem.TryLockTargetNearCenter();
+                    trackingSystem.TryLockTargetNearCenter(allowUnlock: false);
                     // target = null;
                 }
             }
@@ -114,20 +119,25 @@ public class Missile : ComponentBase, IActivateable
                 AntennaData data = JsonUtility.FromJson<AntennaData>(antenna.GetData(rb.transform.position));
                 // print(antenna.GetData(rb.transform.position));
                 // target = data.validTarget ? data.target : null;
-                if (data.validTarget) target = data.target;
+                if (data.validTarget)
+                {
+                    target = data.target;
+                    targetCol = data.targetCol;
+                }
             }
 
             if (armed)
             {
-                trackingSystem.TryLockTargetNearCenter();
+                trackingSystem.TryLockTargetNearCenter(allowUnlock: false);
 
                 if (!string.IsNullOrEmpty(trackingSystem.ReadData()))
                 {
                     TrackingData tData = JsonUtility.FromJson<TrackingData>(trackingSystem.ReadData());
 
-                    if (tData.hasLock && tData.lockedTarget)
+                    if (tData.hasLock && tData.lockedTarget && tData.lockedTarget == targetCol)// && Vector3.Distance(target.Value, tData.lockedTarget.transform.position) < 1)
                     {
                         target = tData.lockedTarget.transform.position;
+                        targetCol = tData.lockedTarget;
                         antenna = null; // disconnect from antenna.
                         print("Found target, disconnecting from ship");
                     }
@@ -137,6 +147,7 @@ public class Missile : ComponentBase, IActivateable
 
         if (!isActive && !DebugActivate) return;
 
+        if (!audioSource.isPlaying) audioSource.Play();
 
         thruster.SetThrusterForce(missileSpeed);
 
@@ -174,10 +185,23 @@ public class Missile : ComponentBase, IActivateable
 
             // Vector3 neededVel = (target.Value + displacementSpeed) - (transform.position + (rb.linearVelocity * Time.deltaTime));
 
+            Vector3 targetPos = (target.Value + displacementSpeed) - ((rb.linearVelocity + (thruster.GetForceDirection() / rb.mass)) * Time.deltaTime);
+            Vector3 targDir = targetPos - rb.transform.position;
+
             // neededVel = (neededVel / Time.deltaTime) - rb.linearVelocity;
+            Vector3 cross = Vector3.Cross(targDir, rb.linearVelocity);
+            float dot = Vector3.Dot(targDir, rb.linearVelocity);
 
+            Vector3 neededLook = Quaternion.AngleAxis(-Mathf.Acos(dot) * Mathf.Rad2Deg, cross) * targDir;
 
-            rb.transform.LookAt((target.Value + displacementSpeed) - (rb.linearVelocity * Time.deltaTime));
+            Vector3 localVel = rb.transform.InverseTransformDirection(rb.linearVelocity);
+
+            localVel.z = 0;
+
+            localVel = rb.transform.TransformDirection(localVel);
+
+            // rb.transform.LookAt(rb.transform.position + neededLook);
+            rb.transform.LookAt(targetPos - localVel);
 
             // rb.transform.LookAt(transform.position + (target.Value - (transform.position + rb.linearVelocity)));
 

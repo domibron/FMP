@@ -46,6 +46,10 @@ public class Warhead : ComponentBase
             {
                 cBase.DealDamage(damage);
             }
+
+            IMissileHit missileHit = col.GetComponent<IMissileHit>();
+
+            if (missileHit != null) missileHit.Hit(transform.position);
         }
 
         if (particlesPrefab != null)

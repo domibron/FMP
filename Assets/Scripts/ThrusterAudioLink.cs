@@ -14,7 +14,6 @@ public class ThrusterAudioLink : MonoBehaviour
 
     void Update()
     {
-        print(GetThrustersAvgMag());
 
         if (GetThrustersAvgMag() > 0 && !audioSource.isPlaying)
         {
@@ -26,6 +25,8 @@ public class ThrusterAudioLink : MonoBehaviour
         {
             audioSource.Stop();
         }
+
+        audioSource.volume = Mathf.Lerp(0, .5f, GetThrustersAvgMag());
     }
 
     private float GetThrustersAvgMag()
